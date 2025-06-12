@@ -1,19 +1,2 @@
-﻿  Application.cpp
-  Geometry.cpp
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,60): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,40): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,30): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,21): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,14): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Input.cpp
-  main.cpp
-  Scene.cpp
-\Scene.cpp(1,1): error C1083: ソース ファイルを開けません。'Scene.cpp':No such file or directory
-  (ソース ファイル '/Scene.cpp' をコンパイルしています)
-  
-  SceneController.cpp
-  TitleScene.cpp
-\TitleScene.cpp(1,1): error C1083: ソース ファイルを開けません。'TitleScene.cpp':No such file or directory
-  (ソース ファイル '/TitleScene.cpp' をコンパイルしています)
-  
-  コードを生成中...
+﻿  GameScene.cpp
+  Game.vcxproj -> C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\x64\Debug\Game.exe

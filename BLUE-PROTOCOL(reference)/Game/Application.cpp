@@ -63,7 +63,7 @@ void Application::Run()
 		sceneController.Update(input);
 		sceneController.Draw();
 
-		DrawFormatString(0, 0, 0xffffff, "fps = %2.2f", GetFPS());
+//		DrawFormatString(0, 0, 0xffffff, "fps = %2.2f", GetFPS());
 
 		// ‰æ–Ê‚ÌØ‚è‘Ö‚í‚è‚ğ‘Ò‚Â
 		ScreenFlip();
