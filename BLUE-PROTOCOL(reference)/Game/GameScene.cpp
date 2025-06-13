@@ -5,6 +5,10 @@
 #include "SceneController.h"
 #include "GameScene.h"
 #include <cassert>
+#include "Player.h"
+//#include "Enemy.h"
+#include "Camera.h"
+#include "Debug.h"
 
 namespace
 {
@@ -70,10 +74,10 @@ void GameScene::NormalDraw()
 }
 
 GameScene::GameScene(SceneController& controller)
-	: Scene(controller),
-	m_frameCount(fade_interval),
+	: BaseScene(controller),
+	m_frameCount(fade_interval), // フレームカウントをフェードインのフレーム数で初期化
 	pUpdateFunc(&GameScene::FadeInUpdate), // 初期はフェードイン
-	pDrawFunc(&GameScene::FadeDraw) // 初期はフェード描画
+	pDrawFunc(&GameScene::FadeDraw)// 初期はフェード描画
 {
 	// ゲームシーンの初期化処理
 	// ここでは特に何もしない
@@ -83,21 +87,44 @@ GameScene::GameScene(SceneController& controller)
 void GameScene::Init()
 {
 	// ゲームシーンの初期化処理
-	// ここでは特に何もしない
-	// 必要ならば、ここでゲームの初期化を行う
 	m_frameCount = fade_interval; // フェードインのフレーム数をリセット
 	pUpdateFunc = &GameScene::FadeInUpdate; // 初期はフェードイン
 	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
+	m_pPlayer = std::make_shared<Player>();
+//	m_pEnemy = std::make_shared<Enemy>();
+	m_pCamera = std::make_shared<Camera>();
+
+
+#ifdef _DEBUG
+	// デバッグ情報の初期化
+	m_pDebug = std::make_shared<Debug>();
+	m_pDebug->Init();
+#endif // _DEBUG
+
 }
 
 void GameScene::Update(Input& input)
 {
 	// Update関数はポインタを使って動的に変更される
 	(this->*pUpdateFunc)(input);
+
+
+
+#ifdef _DEBUG
+	m_pDebug->Update();
+#endif // _DEBUG
+
 }
 
 void GameScene::Draw()
 {
 	// Draw関数はポインタを使って動的に変更される
 	(this->*pDrawFunc)();
+
+
+
+#ifdef _DEBUG
+	m_pDebug->Draw(); // デバッグ情報の描画
+#endif // _DEBUG
+
 }

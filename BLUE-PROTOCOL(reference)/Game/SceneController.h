@@ -4,7 +4,7 @@
 #include <list>
 
 class Input;
-class Scene;
+class BaseScene;
 
 /// <summary>
 /// 各シーンを管理するためのクラス
@@ -14,7 +14,7 @@ class Scene;
 class SceneController
 {
 private:
-	std::list<std::shared_ptr<Scene>> scenes_; ///< シーンのリスト
+	std::list<std::shared_ptr<BaseScene>> scenes_; ///< シーンのリスト
 public:
 	SceneController();
 
@@ -32,13 +32,13 @@ public:
 	/// 各シーンがコントローラーを見て切り替えさせる？
 	/// </summary>
 	/// <param name="">次の状態のポインタ（スマポ）</param>
-	void ChangeScene(std::shared_ptr<Scene>);
+	void ChangeScene(std::shared_ptr<BaseScene>);
 
 	/// <summary>
 	/// 現在実行中のシーンの上に別のシーンを乗っける
 	/// </summary>
 	/// <param mane="scene">乗っけたいシーン</param>
-	void PushScene(std::shared_ptr<Scene> scene);
+	void PushScene(std::shared_ptr<BaseScene> scene);
 
 	/// <summary>
 	/// 現在、一番上にある実行中のシーンを取り除く

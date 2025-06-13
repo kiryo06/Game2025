@@ -1,10 +1,10 @@
 #pragma once
-#include "Scene.h"
+#include "BaseScene.h"
 
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene : public Scene
+class TitleScene : public BaseScene
 {
 private:
 	int m_frameCount = 0; // フレームカウント

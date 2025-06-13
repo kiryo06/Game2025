@@ -1,13 +1,20 @@
 #pragma once
-#include "Scene.h"
+#include "BaseScene.h"
 #include <memory>
 
 class Player;
-class Enemy;
-class GameScene : public Scene
+//class Enemy;
+class Camera;
+class Debug;
+class GameScene : public BaseScene
 {
 private:
 	int m_frameCount = 0; // フレームカウント
+
+	std::shared_ptr<Player> m_pPlayer;
+//	std::shared_ptr<Enemy> m_pEnemy;
+	std::shared_ptr<Camera> m_pCamera;
+	std::shared_ptr<Debug> m_pDebug;
 
 	using UpdateFunc = void (GameScene::*)(Input&);
 	using DrawFunc = void (GameScene::*)();

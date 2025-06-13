@@ -68,7 +68,7 @@ void TitleScene::NormalDraw()
 }
 
 TitleScene::TitleScene(SceneController& controller):
-	Scene(controller),
+	BaseScene(controller),
 	pUpdateFunc(&TitleScene::FadeInUpdate),
 	pDrawFunc(&TitleScene::FadeDraw),
 	m_frameCount(fade_interval)
@@ -99,7 +99,7 @@ void TitleScene::Draw()
 	const Size& wSize = Application::GetInstance().GetWindowSize();
 	Position2 center = { static_cast<float>(wSize.w) * 0.5f, static_cast<float>(wSize.h) * 0.5f };
 	// ”wŒi‚Ì•\Ž¦
-	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y), 1.0, 0.0f, m_background, true);
+//	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y), 1.0, 0.0f, m_background, true);
 	// ŽÀs
 	// ‚±‚ê‚Í‰æ–ÊŒø‰Ê‚Æ‚©‚Ì•`‰æ‚ÉŽg‚Á‚½‚ç‚¢‚¢‚©‚à
 	(this->*pDrawFunc) ();

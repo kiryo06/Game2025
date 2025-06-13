@@ -26,7 +26,7 @@ void SceneController::Draw()
 	}
 }
 
-void SceneController::ChangeScene(std::shared_ptr<Scene> scene)
+void SceneController::ChangeScene(std::shared_ptr<BaseScene> scene)
 {
 	// スマートポインターなのでこれでいい
 	if (scenes_.empty())
@@ -41,7 +41,7 @@ void SceneController::ChangeScene(std::shared_ptr<Scene> scene)
 	// ↑前のオブジェクトは参照を失うので消去される
 }
 
-void SceneController::PushScene(std::shared_ptr<Scene> scene)
+void SceneController::PushScene(std::shared_ptr<BaseScene> scene)
 {
 	// 新しいシーンを一番上に追加する
 	scenes_.push_back(scene);
