@@ -6,6 +6,7 @@ class Player;
 //class Enemy;
 class Camera;
 class Debug;
+class Test;
 class GameScene : public BaseScene
 {
 private:
@@ -15,6 +16,7 @@ private:
 //	std::shared_ptr<Enemy> m_pEnemy;
 	std::shared_ptr<Camera> m_pCamera;
 	std::shared_ptr<Debug> m_pDebug;
+	std::shared_ptr<Test> m_pTest;
 
 	using UpdateFunc = void (GameScene::*)(Input&);
 	using DrawFunc = void (GameScene::*)();

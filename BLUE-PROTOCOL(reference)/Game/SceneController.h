@@ -14,10 +14,14 @@ class BaseScene;
 class SceneController
 {
 private:
-	std::list<std::shared_ptr<BaseScene>> scenes_; ///< シーンのリスト
+	std::list<std::shared_ptr<BaseScene>> _scenes; ///< シーンのリスト
 public:
 	SceneController();
 
+	/// <summary>
+	///  Applicationから呼ばれる関数。現在のシーンのInitをそのまま実行。
+	/// </summary>
+	void Init();
 	/// <summary>
 	/// Applicationから呼ばれる関数。現在のシーンのUpdateをそのまま実行。
 	/// </summary>

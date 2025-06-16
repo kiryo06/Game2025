@@ -9,6 +9,7 @@
 //#include "Enemy.h"
 #include "Camera.h"
 #include "Debug.h"
+#include "Test.h"
 
 namespace
 {
@@ -90,15 +91,26 @@ void GameScene::Init()
 	m_frameCount = fade_interval; // フェードインのフレーム数をリセット
 	pUpdateFunc = &GameScene::FadeInUpdate; // 初期はフェードイン
 	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
+	// プレイヤーの初期化
 	m_pPlayer = std::make_shared<Player>();
-//	m_pEnemy = std::make_shared<Enemy>();
+	m_pPlayer->Init();
+	// カメラの初期化
 	m_pCamera = std::make_shared<Camera>();
+	m_pCamera->Init();
+	// 
+//	m_pEnemy = std::make_shared<Enemy>();
+
 
 
 #ifdef _DEBUG
 	// デバッグ情報の初期化
 	m_pDebug = std::make_shared<Debug>();
 	m_pDebug->Init();
+
+
+	// 授業用
+	m_pTest = std::make_shared<Test>();
+	m_pTest->Init();
 #endif // _DEBUG
 
 }
@@ -107,11 +119,14 @@ void GameScene::Update(Input& input)
 {
 	// Update関数はポインタを使って動的に変更される
 	(this->*pUpdateFunc)(input);
+	m_pPlayer->Update();
+	m_pCamera->Update();
 
 
 
 #ifdef _DEBUG
 	m_pDebug->Update();
+	m_pTest->Update();
 #endif // _DEBUG
 
 }
@@ -120,11 +135,13 @@ void GameScene::Draw()
 {
 	// Draw関数はポインタを使って動的に変更される
 	(this->*pDrawFunc)();
-
+	//m_pPlayer->Draw();
+	m_pCamera->Draw();
 
 
 #ifdef _DEBUG
 	m_pDebug->Draw(); // デバッグ情報の描画
+	m_pTest->Draw();
 #endif // _DEBUG
 
 }

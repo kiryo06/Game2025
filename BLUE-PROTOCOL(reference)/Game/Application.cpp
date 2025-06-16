@@ -42,6 +42,7 @@ bool Application::Init()
 void Application::Run()
 {
 	SceneController sceneController;
+	sceneController.Init();
 	Input input;
 	// ƒQ[ƒ€ƒ‹[ƒv
 	constexpr uint64_t frame_milliseconds = 16;
