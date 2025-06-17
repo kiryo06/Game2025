@@ -25,6 +25,12 @@
     <Filter Include="ソース ファイル\Object">
       <UniqueIdentifier>{c9d5a3aa-154d-43de-b6c0-5edcb1f1d320}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\MyLib">
+      <UniqueIdentifier>{f865a348-4b18-418b-a131-7d9834d6e3cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\MyLib">
+      <UniqueIdentifier>{b3f9e517-c6c9-4ff7-b158-a28c23b094da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,9 +67,6 @@
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="Pad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="MyLib.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
@@ -107,11 +110,11 @@
     <ClInclude Include="Pad.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="MyLib.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib.h">
+      <Filter>ヘッダー ファイル\MyLib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

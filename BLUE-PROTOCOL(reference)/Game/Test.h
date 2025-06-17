@@ -15,5 +15,9 @@ public:
 	void Init();
 	void Update();
 	void Draw();
+	void Hit();
+
+	float GetColRadius1() const;
+	float GetColRadius2() const;
 };
 
