@@ -76,7 +76,7 @@ void Test::Draw()
 
 
 
-	DrawCapsule3DD(m_posD1, m_posD2, kColRadius1, 16, 0xff00ff, 0xffffff, true);
+	DrawCapsule3DD(m_posD1, m_posD2, kColRadius1, 16, 0xff00ff, 0xffffff, false);
 	DrawCapsule3DD(m_posD3, m_posD4, kColRadius2, 16, 0xff00ff, 0xff00ff, false);
 }
 

@@ -11,7 +11,7 @@ namespace
 namespace Pad
 {
 	// パッドの入力状態取得
-	void update()
+	void Update()
 	{
 		// 現在のパッドの状態を取得
 		int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
@@ -43,5 +43,22 @@ namespace Pad
 		bool isNow = (padLog[0] & button);	// 現在の状態
 		bool isLast = (padLog[1] & button);	// １フレーム前の状態
 		return (!isNow && isLast);
+	}
+
+	Vec2 GetLeftStick()
+	{
+		// 左スティックの状態
+		int LeftStickX, LeftStickY;
+		GetJoypadAnalogInput(&LeftStickX, &LeftStickY, DX_INPUT_PAD1);
+		Vec2 leftStick(LeftStickX, LeftStickY);
+		return leftStick;
+	}
+	Vec2 GetRightStick()
+	{
+		// 右スティックの状態
+		int RightStickX, RightStickY;
+		GetJoypadAnalogInputRight(&RightStickX, &RightStickY, DX_INPUT_PAD1);
+		Vec2 RightStick(RightStickX, RightStickY);
+		return RightStick;
 	}
 }

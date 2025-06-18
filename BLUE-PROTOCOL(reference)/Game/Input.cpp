@@ -13,12 +13,12 @@ void Input::SetDefault()
 	inputTable_["next"] =
 	{
 		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_1} // A
+		{PeripheralType::pad1, PAD_INPUT_8} // A
 	};
 	inputTable_["pause"] =
 	{
 		{PeripheralType::keybd, KEY_INPUT_P},
-		{PeripheralType::pad1, PAD_INPUT_8} // START
+	//	{PeripheralType::pad1, PAD_INPUT_8} // START
 	};
 	inputTable_["up"] =
 	{
@@ -54,7 +54,11 @@ void Input::SetDefault()
 	inputTable_["jump"] =
 	{
 		{PeripheralType::keybd, KEY_INPUT_X},
-		{PeripheralType::pad1, PAD_INPUT_3}
+		{PeripheralType::pad1, PAD_INPUT_1}
+	};
+	inputTable_["Debug"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_9}
 	};
 }
 
