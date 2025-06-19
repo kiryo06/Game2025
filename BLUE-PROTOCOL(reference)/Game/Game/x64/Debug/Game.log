@@ -1,2 +1,35 @@
-﻿  Camera.cpp
+﻿  Application.cpp
+  Camera.cpp
+  Debug.cpp
+  GameScene.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(44,28): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(44,45): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(48,19): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(48,37): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  Geometry.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,60): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,40): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,30): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,21): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Geometry.cpp(98,14): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  Input.cpp
+  main.cpp
+  Pad.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Pad.cpp(53,30): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Pad.cpp(53,18): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Pad.cpp(61,32): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Pad.cpp(61,19): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  Player.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Player.cpp(55,44): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Player.cpp(59,44): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Player.cpp(63,36): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Player.cpp(67,36): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  BaseScene.cpp
+  SceneController.cpp
+  Test.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Test.cpp(91,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Test.cpp(92,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Test.cpp(93,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  TitleScene.cpp
+  コードを生成中...
   Game.vcxproj -> C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\x64\Debug\Game.exe
