@@ -1,5 +1,6 @@
 #include "Test.h"
 #include <memory>
+#include "Vec2.h"
 
 namespace
 {
@@ -16,7 +17,10 @@ Test::Test() :
 	m_posD3(100.0f, 50.0f, 0.0f),
 	m_posD4(100.0f, 350.0f, 0.0f),
 	m_MoveX(0.0f),
-	m_MoveZ(0.0f)
+	m_MoveZ(0.0f),
+	circlePos(0.0f,100.0f,200.0f),
+	lineStart(100.0f, 100.0f, 200.0f),
+	lineEnd(-100.0f, 100.0f, 200.0f)
 {
 }
 
@@ -55,13 +59,16 @@ void Test::Update()
 	{
 		m_posD3.z += m_MoveZ;
 		m_posD4.z += m_MoveZ;
+		circlePos.y += m_MoveZ;
 	}
 	if (CheckHitKey(KEY_INPUT_S))
 	{
 		m_posD3.z -= m_MoveZ;
 		m_posD4.z -= m_MoveZ;
+		circlePos.y -= m_MoveZ;
 	}
 	Hit();
+	CapsuleHit();
 }
 
 void Test::Draw()
@@ -73,7 +80,8 @@ void Test::Draw()
 	DrawFormatString(10, 84, 0xff0000, "Move X:%.3f | Move Z:%.3f", m_MoveX, m_MoveZ);
 
 
-
+	DrawLine3D(lineStart,lineEnd,0xffffff);
+	DrawSphere3D(circlePos, kColRadius1, 16, 0xffffff, 0xffffff, false);
 
 
 	DrawCapsule3DD(m_posD1, m_posD2, kColRadius1, 16, 0xff00ff, 0xffffff, false);
@@ -82,9 +90,6 @@ void Test::Draw()
 
 void Test::Hit()
 {
-
-	// 3DãÛä‘è„ÇÃãÖìØémÇÃìñÇΩÇËîªíË(ï◊ã≠óp)
-	// 3DãÛä‘è„ÇÃãÖÇÃíÜêSà íuìØémÇÃãóó£ÇãÅÇﬂÇÈ
 	float playerRadius = GetColRadius1();
 	float enemyRadius = GetColRadius2();
 
@@ -102,6 +107,46 @@ void Test::Hit()
 	{
 		printfDx("--\n");
 	}
+}
+ 
+static float CalculationVectorLength(const VECTOR & vec) 
+{  
+   return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);  
+}  
+
+bool Test::CapsuleHit()  
+{   
+	// âº
+   VECTOR StartToCenter = VECTOR(circlePos.x - lineStart.x, circlePos.y - lineStart.y, circlePos.z - lineStart.z);  
+   VECTOR EndToCenter = VECTOR(circlePos.x - lineEnd.x, circlePos.y - lineEnd.y, circlePos.z - lineEnd.z);
+   VECTOR StartToEnd = VECTOR(lineEnd.x - lineStart.x, lineEnd.y - lineStart.y, lineEnd.z - lineStart.z);  
+   VECTOR NormalStartToEnd = VNorm(StartToEnd);
+   float DistanceProjection = StartToCenter.x * NormalStartToEnd.y - NormalStartToEnd.x * StartToCenter.y;
+
+   if (fabs(DistanceProjection) < kColRadius1)
+   {  
+	   printfDx("Hit!!\n");
+   }  
+   else  
+   {  
+	   printfDx("--\n");
+   }  
+
+   float dot01 = StartToCenter.x * StartToEnd.x + StartToCenter.y * StartToEnd.y;
+   float dot02 = EndToCenter.x * StartToEnd.x + EndToCenter.y * StartToEnd.y;
+
+   if (dot01 * dot02 <= 0.0f)  
+   {  
+       return true;  
+   }  
+
+   if (CalculationVectorLength(StartToCenter) < kColRadius1 ||
+       CalculationVectorLength(EndToCenter) < kColRadius1)
+   {  
+       return true;  
+   }  
+
+   return false;  
 }
 
 
