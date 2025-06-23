@@ -6,6 +6,24 @@
 /// </summary>
 class TitleScene : public BaseScene
 {
+public:
+	TitleScene(SceneController& controller);
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Init() override;
+	void End() override;
+	/// <summary>
+	/// 派生クラスで実装を実装
+	/// virtual はこれを継承するかもしれないから、
+	/// overrideは明示的にオーバーライドをエディタに示すため
+	/// </summary>
+	void Update(Input& input) override;
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw() override;
 private:
 	int m_frameCount = 0; // フレームカウント
 	int m_background = -1; // 背景画像のハンドル
@@ -26,23 +44,5 @@ private:
 	// 描画
 	void FadeDraw();
 	void NormalDraw();
-
-public:
-	TitleScene(SceneController& controller);
-
-	/// <summary>
-	/// 初期化処理
-	/// </summary>
-	void Init() override;
-	/// <summary>
-	/// 派生クラスで実装を実装
-	/// virtual はこれを継承するかもしれないから、
-	/// overrideは明示的にオーバーライドをエディタに示すため
-	/// </summary>
-	void Update(Input& input) override;
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw() override;
 };
 

@@ -18,9 +18,9 @@ namespace
 
 Player::Player() :
 	m_model(-1),
-	m_pos(0.0f, 20.2f,0.0f),
-	m_vec(0.0f,0.0f,0.0f),
-	m_modelRot{ 0.0f, 0.0f, 0.0f },
+	m_pos(0.0f, 20.2f, 0.0f),
+	m_vec(0.0f, 0.0f, 0.0f),
+	m_rotY(0.0f),
 	m_hp(kDefaultHp)
 {
 }
@@ -35,7 +35,8 @@ void Player::Init()
 
 void Player::Update(Input& input)
 {
-	//	m_vec = VScale(m_vec, kMoveDecRate);	// 移動ベクトルを減速
+	VECTOR dir = VGet(0, 0, 0);
+
 	m_vec.x *= kMoveDecRate;
 	m_vec.z *= kMoveDecRate;
 
@@ -48,50 +49,56 @@ void Player::Update(Input& input)
 		m_vec.y = 0.0f;
 		m_pos.y = 0.0f;
 	}
-
 	// プレイヤーの移動
-	if ((Pad::GetLeftStick)().x < -1.0f)
-	{
-		m_vec.x += Pad::GetLeftStick().x * 0.001 * -1.0f;
-	}
-	if ((Pad::GetLeftStick)().x > 1.0f)
-	{
-		m_vec.x -= Pad::GetLeftStick().x * 0.001 * 1.0f;
-	}
-	if ((Pad::GetLeftStick)().y < -1.0f)
+	
+	// 前または後ろならば、
+	if ((Pad::GetLeftStick)().y < -1.0f || (Pad::GetLeftStick)().y > 1.0f)
 	{
 		m_vec.z += Pad::GetLeftStick().y * 0.001;
+		dir.z = Pad::GetLeftStick().y;
 	}
-	if ((Pad::GetLeftStick)().y > 1.0f)
+	
+	// 左または右ならば、
+	if ((Pad::GetLeftStick)().x < -1.0f || (Pad::GetLeftStick)().x > 1.0f)
 	{
-		m_vec.z += Pad::GetLeftStick().y * 0.001;
+		m_vec.x -= Pad::GetLeftStick().x * 0.001;
+		dir.x = Pad::GetLeftStick().x;
 	}
-
+	
 	// プレイヤーのを初期位置に戻す
-//	if (Pad::isPress(PAD_INPUT_9))
 	if (input.IsTrigger("Debug"))
 	{
 		m_pos = VGet(0.0f, 0.0f, 0.0f);
 	}
+	// ジャンプ処理
 	if (!isJumping())
 	{
-//		if (Pad::isTrigger(PAD_INPUT_1))
 		if (input.IsTrigger("jump"))
 		{
 			m_vec.y = kJumpPower;
 		}
 	}
-
+	// プレイヤーの位置に値を
 	m_pos = VAdd(m_pos, m_vec);
 
-//	MV1SetPosition(m_model, m_pos);
-//	MV1SetRotationXYZ(m_model, m_modelRot);
+	// 最後に入力された値を変更しないめに入力がないときは処理を行わない
+	if (VSize(dir) != 0)
+	{
+		// 正規化
+		dir = VNorm(dir);
+		// アークタンジェント
+		m_rotY = atan2(dir.z, dir.x) + DX_PI_F / 2;
+	}
+	// プレイヤーの位置
+	MV1SetPosition(m_model, m_pos);
+	// プレイヤーの向いている向き
+	MV1SetRotationXYZ(m_model, VGet(0, m_rotY,0));
 }
 
 void Player::Draw()
 {
 	// プレイヤーのモデルを描画
-//	MV1DrawModel(m_model);
+	MV1DrawModel(m_model);
 
 #ifdef _DEBUG
 	// 当たり判定のデバック表示

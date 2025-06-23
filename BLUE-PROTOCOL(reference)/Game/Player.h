@@ -9,7 +9,7 @@ private:
 	int m_model;
 	VECTOR m_pos;
 	VECTOR m_vec;
-	VECTOR m_modelRot;
+	float m_rotY;
 
 	int m_hp;
 public:
@@ -24,7 +24,7 @@ public:
 
 	VECTOR GetPos()const { return m_pos; }
 	VECTOR GetVec()const { return m_vec; }
-	VECTOR GetRot()const { return m_modelRot; }
+//	VECTOR GetRot()const { return m_modelRot; }
 
 	VECTOR GetColPos() const;
 

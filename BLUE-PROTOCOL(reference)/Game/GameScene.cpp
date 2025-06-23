@@ -16,6 +16,80 @@ namespace
 	constexpr int fade_interval = 60; // フェードイン・アウトのフレーム数
 }
 
+void GameScene::Init()
+{
+	// ゲームシーンの初期化処理
+	m_frameCount = fade_interval; // フェードインのフレーム数をリセット
+	pUpdateFunc = &GameScene::FadeInUpdate; // 初期はフェードイン
+	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
+	
+	m_playerHandle = MV1LoadModel("data/model/player.mv1");
+//	m_enemyHandle = MV1LoadModel("data/model/enemy.mv1");
+//	m_fieldHandle = MV1LoadModel("data/model/field.mv1");
+	
+	// カメラの初期化
+	m_pCamera = std::make_shared<Camera>();
+	m_pCamera->Init();
+	// プレイヤーの初期化
+	m_pPlayer = std::make_shared<Player>();
+	m_pPlayer->SetModel(m_playerHandle);
+	m_pPlayer->Init();
+	// 
+//	m_pEnemy = std::make_shared<Enemy>();
+
+
+
+#ifdef _DEBUG
+	// デバッグ情報の初期化
+	m_pDebug = std::make_shared<Debug>();
+	m_pDebug->Init();
+
+
+	// 授業用
+	m_pTest = std::make_shared<Test>();
+	m_pTest->Init();
+#endif // _DEBUG
+
+}
+
+void GameScene::End()
+{
+	// モデルの解放
+	MV1DeleteModel(m_playerHandle);
+//	MV1DeleteModel(m_enemyHandle);
+//	MV1DeleteModel(m_fieldHandle);
+}
+
+void GameScene::Update(Input& input)
+{
+	m_pCamera->Update();
+	m_pPlayer->Update(input);
+
+
+
+#ifdef _DEBUG
+	m_pDebug->Update();
+//	m_pTest->Update();
+#endif // _DEBUG
+	// Update関数はポインタを使って動的に変更される
+	(this->*pUpdateFunc)(input);
+}
+
+void GameScene::Draw()
+{
+	m_pCamera->Draw();
+	m_pPlayer->Draw();
+
+
+#ifdef _DEBUG
+	m_pDebug->Draw(); // デバッグ情報の描画
+//	m_pTest->Draw();
+#endif // _DEBUG
+	// Draw関数はポインタを使って動的に変更される
+	(this->*pDrawFunc)();
+}
+
+
 void GameScene::FadeInUpdate(Input& input)
 {
 	--m_frameCount;
@@ -78,68 +152,10 @@ GameScene::GameScene(SceneController& controller)
 	: BaseScene(controller),
 	m_frameCount(fade_interval), // フレームカウントをフェードインのフレーム数で初期化
 	pUpdateFunc(&GameScene::FadeInUpdate), // 初期はフェードイン
-	pDrawFunc(&GameScene::FadeDraw)// 初期はフェード描画
+	pDrawFunc(&GameScene::FadeDraw),// 初期はフェード描画
+	m_playerHandle(-1)
 {
 	// ゲームシーンの初期化処理
-	// ここでは特に何もしない
-	// 必要ならば、ここでゲームの初期化を行う
-}
-
-void GameScene::Init()
-{
-	// ゲームシーンの初期化処理
-	m_frameCount = fade_interval; // フェードインのフレーム数をリセット
-	pUpdateFunc = &GameScene::FadeInUpdate; // 初期はフェードイン
-	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
-	// カメラの初期化
-	m_pCamera = std::make_shared<Camera>();
-	m_pCamera->Init();
-	// プレイヤーの初期化
-	m_pPlayer = std::make_shared<Player>();
-	m_pPlayer->Init();
-	// 
-//	m_pEnemy = std::make_shared<Enemy>();
-
-
-
-#ifdef _DEBUG
-	// デバッグ情報の初期化
-	m_pDebug = std::make_shared<Debug>();
-	m_pDebug->Init();
-
-
-	// 授業用
-	m_pTest = std::make_shared<Test>();
-	m_pTest->Init();
-#endif // _DEBUG
-
-}
-
-void GameScene::Update(Input& input)
-{
-	m_pCamera->Update();
-	m_pPlayer->Update(input);
-
-
-
-#ifdef _DEBUG
-	m_pDebug->Update();
-	m_pTest->Update();
-#endif // _DEBUG
-	// Update関数はポインタを使って動的に変更される
-	(this->*pUpdateFunc)(input);
-}
-
-void GameScene::Draw()
-{
-	m_pCamera->Draw();
-	m_pPlayer->Draw();
-
-
-#ifdef _DEBUG
-	m_pDebug->Draw(); // デバッグ情報の描画
-	m_pTest->Draw();
-#endif // _DEBUG
-	// Draw関数はポインタを使って動的に変更される
-	(this->*pDrawFunc)();
+	//m_playerHandle = MV1LoadModel("data/model/player.mv1");
+	//assert(m_playerHandle != -1);
 }

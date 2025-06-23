@@ -100,7 +100,6 @@ void Camera::Update()
 
 	// カメラ設定、注視点の更新
 	SetCameraPositionAndTarget_UpVecY(toCameraXY, m_targetPos);
-
 	DrawFormatString(10, 132, 0xff0000, "%f", m_cameraRot.x);
 	DrawFormatString(10, 116, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", toCameraX.x, toCameraX.y, toCameraX.z);
 }
@@ -108,5 +107,4 @@ void Camera::Update()
 void Camera::Draw() const
 {
 	DrawFormatString(10, 100, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", m_move.x, m_move.y, m_move.z);
-
 }

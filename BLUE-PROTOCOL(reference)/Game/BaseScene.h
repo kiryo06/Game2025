@@ -16,6 +16,8 @@ public:
 
 	virtual void Init() = 0;
 
+	virtual void End() = 0;
+
 	/// <summary>
 	/// “à•”•Ï”‚ÌXV
 	/// </summary>

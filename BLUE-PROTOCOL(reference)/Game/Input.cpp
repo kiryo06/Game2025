@@ -62,6 +62,7 @@ void Input::SetDefault()
 	};
 }
 
+
 void Input::SetTempDefault()
 {
 	tempInputTable_["next"] =
@@ -111,6 +112,7 @@ void Input::SetTempDefault()
 		{PeripheralType::pad1, PAD_INPUT_3}
 	};
 }
+
 
 void Input::CommitEdittedInputTable()
 {

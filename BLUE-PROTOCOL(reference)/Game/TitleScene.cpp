@@ -11,6 +11,37 @@ namespace
 	constexpr int fade_interval = 60;
 }
 
+void TitleScene::Init()
+{
+	// 初期化処理
+	// ここでは特に何もしない
+	// ただし、必要な初期化があればここに書く
+	m_frameCount = fade_interval;
+	pUpdateFunc = &TitleScene::FadeInUpdate;
+	pDrawFunc = &TitleScene::FadeDraw;
+}
+
+void TitleScene::End()
+{
+}
+
+void TitleScene::Update(Input& input)
+{
+	(this->*pUpdateFunc)(input);
+}
+
+void TitleScene::Draw()
+{
+	// 画像の中心を出すだけ
+	const Size& wSize = Application::GetInstance().GetWindowSize();
+	Position2 center = { static_cast<float>(wSize.w) * 0.5f, static_cast<float>(wSize.h) * 0.5f };
+	// 背景の表示
+//	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y), 1.0, 0.0f, m_background, true);
+	// 実行
+	// これは画面効果とかの描画に使ったらいいかも
+	(this->*pDrawFunc) ();
+}
+
 void TitleScene::FadeInUpdate(Input& input)
 {
 	--m_frameCount;
@@ -76,31 +107,4 @@ TitleScene::TitleScene(SceneController& controller):
 	// ロード
 	m_background = LoadGraph("image/Title.png");
 	assert(m_background != -1);
-}
-
-void TitleScene::Init()
-{
-	// 初期化処理
-	// ここでは特に何もしない
-	// ただし、必要な初期化があればここに書く
-	m_frameCount = fade_interval;
-	pUpdateFunc = &TitleScene::FadeInUpdate;
-	pDrawFunc = &TitleScene::FadeDraw;
-}
-
-void TitleScene::Update(Input& input)
-{
-	(this->*pUpdateFunc)(input);
-}
-
-void TitleScene::Draw()
-{
-	// 画像の中心を出すだけ
-	const Size& wSize = Application::GetInstance().GetWindowSize();
-	Position2 center = { static_cast<float>(wSize.w) * 0.5f, static_cast<float>(wSize.h) * 0.5f };
-	// 背景の表示
-//	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y), 1.0, 0.0f, m_background, true);
-	// 実行
-	// これは画面効果とかの描画に使ったらいいかも
-	(this->*pDrawFunc) ();
 }

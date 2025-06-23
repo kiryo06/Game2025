@@ -1,6 +1,2 @@
-﻿  ColliderCircle3D.cpp
-  DebugDraw.cpp
-  Physics.cpp
-  Rigidbody.cpp
-  コードを生成中...
+﻿  GameScene.cpp
   Game.vcxproj -> C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\x64\Debug\Game.exe

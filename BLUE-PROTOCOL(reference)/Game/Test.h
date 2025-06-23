@@ -20,7 +20,8 @@ public:
 	void Update();
 	void Draw();
 	void Hit();
-	bool CapsuleHit();
+	// ƒ‰ƒCƒ“‚Æ‹…‚Ì“–‚½‚è”»’è
+	bool LineAndBallHit();
 
 	float GetColRadius1() const;
 	float GetColRadius2() const;

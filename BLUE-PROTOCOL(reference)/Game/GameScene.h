@@ -9,8 +9,31 @@ class Debug;
 class Test;
 class GameScene : public BaseScene
 {
+public:
+	GameScene(SceneController& controller);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void Init() override;
+	/// <summary>
+	/// 
+	/// </summary>
+	void End() override;
+	/// <summary>
+	/// 派生クラスで実装を実装
+	/// virtual はこれを継承するかもしれないから、
+	/// overrideは明示的にオーバーライドをエディタに示すため
+	/// </summary>
+	void Update(Input& input) override;
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw() override;
 private:
-	int m_frameCount = 0; // フレームカウント
+	int m_frameCount = 0;	// フレームカウント
+	int m_playerHandle;		// プレイヤーのモデル
+//	int m_enemyHandle;		// 敵のモデル
 
 	std::shared_ptr<Player> m_pPlayer;
 //	std::shared_ptr<Enemy> m_pEnemy;
@@ -34,23 +57,5 @@ private:
 	// 描画
 	void FadeDraw();
 	void NormalDraw();
-
-public:
-	GameScene(SceneController& controller);
-
-	/// <summary>
-	/// 
-	/// </summary>
-	void Init() override;
-	/// <summary>
-	/// 派生クラスで実装を実装
-	/// virtual はこれを継承するかもしれないから、
-	/// overrideは明示的にオーバーライドをエディタに示すため
-	/// </summary>
-	void Update(Input& input) override;
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw() override;
 };
 

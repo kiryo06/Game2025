@@ -41,10 +41,10 @@ void Debug::DrawGrid() const
 {
 	for (int z = -500; z <= 500; z += 100)
 	{
-		DrawLine3D(VGet(-500, 0, z), VGet(500, 0, z), 0xff000);
+		DrawLine3D(VGet(-500, 0, z), VGet(500, 0, z), 0xff0099);
 	}
 	for (int x = -500; x <= 500; x += 100)
 	{
-		DrawLine3D(VGet(x, 0, -500), VGet(x, 0, 500), 0x0000ff);
+		DrawLine3D(VGet(x, 0, -500), VGet(x, 0, 500), 0x0099ff);
 	}
 }

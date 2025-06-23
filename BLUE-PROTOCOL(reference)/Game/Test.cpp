@@ -68,7 +68,8 @@ void Test::Update()
 		circlePos.y -= m_MoveZ;
 	}
 	Hit();
-	CapsuleHit();
+	
+	LineAndBallHit();
 }
 
 void Test::Draw()
@@ -79,13 +80,15 @@ void Test::Draw()
 	DrawFormatString(10, 68, 0xff0000, "pos4 X:%.3f | Y:%.3f | Z:%.3f", m_posD4.x, m_posD4.y, m_posD4.z);
 	DrawFormatString(10, 84, 0xff0000, "Move X:%.3f | Move Z:%.3f", m_MoveX, m_MoveZ);
 
-
-	DrawLine3D(lineStart,lineEnd,0xffffff);
-	DrawSphere3D(circlePos, kColRadius1, 16, 0xffffff, 0xffffff, false);
-
-
+	// カプセル1
 	DrawCapsule3DD(m_posD1, m_posD2, kColRadius1, 16, 0xff00ff, 0xffffff, false);
+	// カプセル2
 	DrawCapsule3DD(m_posD3, m_posD4, kColRadius2, 16, 0xff00ff, 0xff00ff, false);
+
+	// ライン
+	DrawLine3D(lineStart, lineEnd, 0xffffff);
+	// 球
+	DrawSphere3D(circlePos, kColRadius1, 16, 0xffffff, 0xffffff, false);
 }
 
 void Test::Hit()
@@ -114,7 +117,7 @@ static float CalculationVectorLength(const VECTOR & vec)
    return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);  
 }  
 
-bool Test::CapsuleHit()  
+bool Test::LineAndBallHit()
 {   
 	// 仮
    VECTOR StartToCenter = VECTOR(circlePos.x - lineStart.x, circlePos.y - lineStart.y, circlePos.z - lineStart.z);  
