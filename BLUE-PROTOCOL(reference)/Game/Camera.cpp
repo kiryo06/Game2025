@@ -12,6 +12,7 @@ Camera::Camera():
 	m_targetPos(VGet(0.0f, 200.0f, 0.0f)),
 	m_move(VGet(0.0f, 0.0f, 0.0f)),
 	m_cameraRot(VGet(0.0f, 0.0f, 0.0f)),
+	m_cameraPosAtan2(0.0f),
 	m_cemeraGetPos(VGet(0.0f,0.0f,0.0f)),
 	m_cameraGetTarget(VGet(0.0f,0.0f,0.0f))
 {
@@ -21,7 +22,7 @@ Camera::~Camera()
 {
 }
 
-void Camera::Init() const
+void Camera::Init()const
 {
 	// カメラのNear,Far
 	SetCameraNearFar(0.0f, 2000.0f);
@@ -34,7 +35,7 @@ void Camera::Init() const
 	SetWriteZBuffer3D(TRUE);
 }
 
-void Camera::Update()
+void Camera::Update(Player* m_pPlayer)
 {
 	// カメラの回転速度を上げる
 	if (CheckHitKey(KEY_INPUT_NUMPAD0))
@@ -99,39 +100,29 @@ void Camera::Update()
 	VECTOR toCameraXY = VTransform(toCameraX, cameraRotMtxY);
 
 	// プレイヤー追従
-	//VECTOR toCameraPlayer = VAdd(toCameraXY, m_pPlayer->GetPos());
+	VECTOR toCameraPlayerPos = VAdd(toCameraXY, m_pPlayer->GetPos());
+	VECTOR toCameraPlayerTarget = VAdd(m_targetPos, m_pPlayer->GetPos());
+
 
 	// カメラ設定、注視点の更新
-	SetCameraPositionAndTarget_UpVecY(toCameraXY, m_targetPos);
+	SetCameraPositionAndTarget_UpVecY(toCameraPlayerPos, toCameraPlayerTarget);
 	DrawFormatString(10, 132, 0xff0000, "%f", m_cameraRot.x);
 	DrawFormatString(10, 116, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", toCameraX.x, toCameraX.y, toCameraX.z);
 
 
+	// カメラの位置をNormした値を入れる変数
+	VECTOR cameraPosNorm = VNorm(VSub(GetCameraPosition(),GetCameraTarget()));
+	// カメラのアークタンジェントを保存
+	m_cameraPosAtan2 = atan2(cameraPosNorm.z, cameraPosNorm.x);
 
-
-
-	float asdas;
-
-
-
-
-	m_cemeraGetPos = VNorm(GetCameraPosition());
-
-	asdas = atan2(m_cemeraGetPos.z, m_cemeraGetPos.x);
-
+	// カメラの位置と注視点をもらう
 	m_cemeraGetPos = GetCameraPosition();
-	m_cameraGetTarget = GetCameraTarget();	// カメラの注視点を取得するためだけのもの
+	m_cameraGetTarget = GetCameraTarget();
 
-	MGetRotAxis(m_cemeraGetPos, asdas);
-
-	DrawFormatString(321, 0, 0xfffff, "%f", asdas);
+	// 指定軸で指定角度回転する行列を取得
+	//MGetRotAxis(m_cemeraGetPos, m_cameraPosAtan2);
 
 	m_cemeraGetPos = VNorm(VGet(m_cemeraGetPos.x,0.0f,m_cemeraGetPos.z));
-
-	Player m_pPlayer;
-	VECTOR sda;
-	sda = m_pPlayer.GetPos();
-	DrawFormatString(0, 0, 0xffffff, "%f", sda.x);
 }
 
 void Camera::Draw() const
@@ -141,4 +132,5 @@ void Camera::Draw() const
 	DrawFormatString(10, 100, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", m_move.x, m_move.y, m_move.z);
 	// カメラの位置から表示
 	DrawLine3D(VGet(m_cemeraGetPos.x * 100, 0.0f, m_cemeraGetPos.z * 100), VGet(m_cameraGetTarget.x, 0.0f, m_cameraGetTarget.z), 0xffffff);
+	DrawFormatString(321, 0, 0xfffff, "%f", m_cameraPosAtan2);
 }

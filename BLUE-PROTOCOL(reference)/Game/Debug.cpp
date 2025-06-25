@@ -1,5 +1,11 @@
 #include "Debug.h"  
 
+
+namespace
+{
+	constexpr int kDrawGrid = 10000;
+}
+
 void Debug::Init() const
 {
 }
@@ -39,12 +45,12 @@ void Debug::DrawAxis() const
 
 void Debug::DrawGrid() const
 {
-	for (int z = -500; z <= 500; z += 100)
+	for (int z = -kDrawGrid; z <= kDrawGrid; z += 100)
 	{
-		DrawLine3D(VGet(-500, 0, z), VGet(500, 0, z), 0xff0099);
+		DrawLine3D(VGet(-kDrawGrid, 0, z), VGet(kDrawGrid, 0, z), 0xff0099);
 	}
-	for (int x = -500; x <= 500; x += 100)
+	for (int x = -kDrawGrid; x <= kDrawGrid; x += 100)
 	{
-		DrawLine3D(VGet(x, 0, -500), VGet(x, 0, 500), 0x0099ff);
+		DrawLine3D(VGet(x, 0, -kDrawGrid), VGet(x, 0, kDrawGrid), 0x0099ff);
 	}
 }

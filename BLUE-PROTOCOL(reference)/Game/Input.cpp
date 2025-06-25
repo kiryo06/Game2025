@@ -56,6 +56,10 @@ void Input::SetDefault()
 		{PeripheralType::keybd, KEY_INPUT_X},
 		{PeripheralType::pad1, PAD_INPUT_1}
 	};
+	inputTable_["shoot"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_2}
+	};
 	inputTable_["Debug"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_9}

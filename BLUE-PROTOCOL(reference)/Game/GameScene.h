@@ -35,6 +35,7 @@ private:
 	int m_playerHandle;		// プレイヤーのモデル
 //	int m_enemyHandle;		// 敵のモデル
 
+
 	std::shared_ptr<Player> m_pPlayer;
 //	std::shared_ptr<Enemy> m_pEnemy;
 	std::shared_ptr<Camera> m_pCamera;

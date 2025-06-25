@@ -29,10 +29,11 @@ void GameScene::Init()
 	
 	// カメラの初期化
 	m_pCamera = std::make_shared<Camera>();
-	m_pCamera->Init();
 	// プレイヤーの初期化
 	m_pPlayer = std::make_shared<Player>();
 	m_pPlayer->SetModel(m_playerHandle);
+
+	m_pCamera->Init();
 	m_pPlayer->Init();
 	// 
 //	m_pEnemy = std::make_shared<Enemy>();
@@ -62,8 +63,8 @@ void GameScene::End()
 
 void GameScene::Update(Input& input)
 {
-	m_pCamera->Update();
-	m_pPlayer->Update(input);
+	m_pCamera->Update(m_pPlayer.get());
+	m_pPlayer->Update(input, m_pCamera.get());
 
 
 
@@ -77,14 +78,14 @@ void GameScene::Update(Input& input)
 
 void GameScene::Draw()
 {
+#ifdef _DEBUG
+	m_pDebug->Draw(); // デバッグ情報の描画
+	//	m_pTest->Draw();
+#endif // _DEBUG
+
 	m_pCamera->Draw();
 	m_pPlayer->Draw();
 
-
-#ifdef _DEBUG
-	m_pDebug->Draw(); // デバッグ情報の描画
-//	m_pTest->Draw();
-#endif // _DEBUG
 	// Draw関数はポインタを使って動的に変更される
 	(this->*pDrawFunc)();
 }
