@@ -7,7 +7,7 @@
 #include <string>
 
 Application::Application():
-	windowSize_{ 640, 480 } // 初期ウィンドウサイズを設定
+	windowSize_{ 640, 480 }// 初期ウィンドウサイズを設定
 {
 }
 
@@ -20,6 +20,7 @@ Application& Application::GetInstance()
 
 bool Application::Init()
 {
+
 	// TODO: return ステートメントをここに挿入します
 	// こういった関数は、ウィンドウが開く前に処理しておく
 	ChangeWindowMode(Game::kDefaultWindowMode);
@@ -68,7 +69,6 @@ void Application::Run()
 
 		// 画面の切り替わりを待つ
 		ScreenFlip();
-
 		// 待ちを行う
 		while (GetNowHiPerformanceCount() - startTime < 16667);
 	}

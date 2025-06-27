@@ -58,11 +58,6 @@ void Player::Update(Input& input, Camera *camera)
 			m_vec.y = kJumpPower;
 		}
 	}
-	//VECTOR shoot = VGet(0.0f,0.0f,0.0f);
-	//if (input.IsTrigger("shoot"))
-	//{
-	//	shoot.x = 20;
-	//}
 	// プレイヤーの移動
 	Move();
 
@@ -73,6 +68,7 @@ void Player::Update(Input& input, Camera *camera)
 		m_pos = VGet(0.0f, 0.0f, 0.0f);
 	}
 #endif // _DEBUG
+
 }
 
 void Player::Draw()
@@ -80,11 +76,11 @@ void Player::Draw()
 	// プレイヤーのモデルを描画
 	MV1DrawModel(m_model);
 #ifdef _DEBUG
-	// 当たり判定のデバック表示
+	
 	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
 	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
 
-
+	// 当たり判定のデバック表示
 	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
 	DrawSphere3D(VGet(0, 80, 0), 16, 16, 0x00ff00, 0x00ff00, false);
 	DrawLine3D(GetColPos(), VGet(0, 80, 0), 0x00ff00);
@@ -109,23 +105,29 @@ void Player::Move()
 	VECTOR dir = VGet(0, 0, 0);
 
 	// 前または後ろならば、
-	if ((Pad::GetLeftStick)().y < -1.0f || (Pad::GetLeftStick)().y > 1.0f)
+	if (Pad::GetLeftStick().y < -1.0f || Pad::GetLeftStick().y > 1.0f)
 	{
 		dir.z = Pad::GetLeftStick().y;
 	}
 
 	// 左または右ならば、
-	if ((Pad::GetLeftStick)().x < -1.0f || (Pad::GetLeftStick)().x > 1.0f)
+	if (Pad::GetLeftStick().x < -1.0f || Pad::GetLeftStick().x > 1.0f)
 	{
 		dir.x = -Pad::GetLeftStick().x;
 	}
 
+	// dirに値が入っているなら正規化する
 	if (VSize(dir) != 0.0f)
 	{
 		dir = VNorm(dir);
 	}
+
+	// カメラの向いている向きfloatを反転させる
 	m_getCameraAtan2 *= -1;
+
+	// カメラの向いている向きを90度補正
 	m_getCameraAtan2 += DX_PI_F / 2;
+
 	VECTOR vec;
 	vec.x = cosf(m_getCameraAtan2) * dir.x + sinf(m_getCameraAtan2) * dir.z;
 	vec.y = dir.y;
@@ -139,18 +141,18 @@ void Player::Move()
 	m_pos = VAdd(m_pos, m_vec);
 
 	// 最後に入力された値を変更しないめに入力がないときは処理を行わない
-	if (VSize(dir) != 0)
+	if (VSize(vec) != 0)
 	{
 		// 正規化
-		dir = VNorm(dir);
+		vec = VNorm(vec);
 		// アークタンジェント
-		m_rotY = atan2(dir.z, dir.x);
+		m_rotY = atan2(vec.z, vec.x);
 		m_rotY -= DX_PI_F /2*3;	// 90度ずれていた分の補正
 		m_rotY *= -1.0f;
 	}
+
 	// プレイヤーの位置
 	MV1SetPosition(m_model, m_pos);
-
 
 	// プレイヤーの向いている向き
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));

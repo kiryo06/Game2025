@@ -13,57 +13,81 @@ void Input::SetDefault()
 	inputTable_["next"] =
 	{
 		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_8} // A
+		{PeripheralType::pad1, PAD_INPUT_8}
 	};
-	inputTable_["pause"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_P},
-	//	{PeripheralType::pad1, PAD_INPUT_8} // START
-	};
-	inputTable_["up"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_UP},
-		{PeripheralType::pad1, PAD_INPUT_UP}
-	};
-	inputTable_["down"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_DOWN},
-		{PeripheralType::pad1, PAD_INPUT_DOWN}
-	};
-	inputTable_["left"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_LEFT},
-		{PeripheralType::pad1, PAD_INPUT_LEFT}
-	};
-	inputTable_["right"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_RIGHT},
-		{PeripheralType::pad1, PAD_INPUT_RIGHT}
-	};
-	// ゲーム中のボタンテーブル
-	inputTable_["action"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_Z},
-		{PeripheralType::pad1, PAD_INPUT_3}
-	};
-	inputTable_["ok"] =
-	{	// nextと同じ
-		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_1}
-	};
+	// ジャンプ処理
 	inputTable_["jump"] =
 	{
-		{PeripheralType::keybd, KEY_INPUT_X},
 		{PeripheralType::pad1, PAD_INPUT_1}
 	};
 	inputTable_["shoot"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_2}
 	};
+	// プレイヤーを初期位置に戻す
 	inputTable_["Debug"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_9}
 	};
+	// データを書き込むDebug
+	inputTable_["DataDebug"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_7}
+	};
+
+
+#if false
+	// Aボタン
+	inputTable_["Pad_1"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_1}
+	};
+	// Bボタン
+	inputTable_["Pad_2"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_2}
+	};
+	// Xボタン
+	inputTable_["Pad_3"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_3}
+	};
+	// Yボタン
+	inputTable_["Pad_4"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_4}
+	};
+	// 左ボタン(小さいやつ)
+	inputTable_["Pad_5"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_5}
+	};
+	// 右ボタン(小さいやつ)
+	inputTable_["Pad_6"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_6}
+	};
+	// BACKボタン
+	inputTable_["Pad_7"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_7}
+	};
+	// STARTボタン
+	inputTable_["Pad_8"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_8}
+	};
+	// 左スティック押しこみ
+	inputTable_["Pad_9"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_9}
+	};
+	// 右スティック押しこみ
+	inputTable_["Pad_10"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_10}
+	};
+#endif
 }
 
 
@@ -78,42 +102,6 @@ void Input::SetTempDefault()
 	{
 		{PeripheralType::keybd, KEY_INPUT_P},
 		{PeripheralType::pad1, PAD_INPUT_8} // START
-	};
-	tempInputTable_["up"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_UP},
-		{PeripheralType::pad1, PAD_INPUT_UP}
-	};
-	tempInputTable_["down"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_DOWN},
-		{PeripheralType::pad1, PAD_INPUT_DOWN}
-	};
-	tempInputTable_["left"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_LEFT},
-		{PeripheralType::pad1, PAD_INPUT_LEFT}
-	};
-	tempInputTable_["right"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_RIGHT},
-		{PeripheralType::pad1, PAD_INPUT_RIGHT}
-	};
-	// ゲーム中のボタンテーブル
-	tempInputTable_["action"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_Z},
-		{PeripheralType::pad1, PAD_INPUT_3}
-	};
-	tempInputTable_["ok"] =
-	{	// nextと同じ
-		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_1}
-	};
-	tempInputTable_["jump"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_X},
-		{PeripheralType::pad1, PAD_INPUT_3}
 	};
 }
 

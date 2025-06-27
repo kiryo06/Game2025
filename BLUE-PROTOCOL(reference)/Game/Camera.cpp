@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include <cmath>
 #include "Player.h"
+#include "Pad.h"
 
 namespace
 {
@@ -10,7 +11,7 @@ namespace
 Camera::Camera():
 	m_pos(VGet(0.0f, 400.0f, 1200.0f)),
 	m_targetPos(VGet(0.0f, 200.0f, 0.0f)),
-	m_move(VGet(0.0f, 0.0f, 0.0f)),
+	m_move(VGet(0.05f, 0.05f, 0.0f)),
 	m_cameraRot(VGet(0.0f, 0.0f, 0.0f)),
 	m_cameraPosAtan2(0.0f),
 	m_cemeraGetPos(VGet(0.0f,0.0f,0.0f)),
@@ -64,28 +65,31 @@ void Camera::Update(Player* m_pPlayer)
 		m_cameraRot.y = kReset;
 	}
 	// カメラの回転上回転
-	if (CheckHitKey(KEY_INPUT_NUMPAD8))
+	if (CheckHitKey(KEY_INPUT_NUMPAD8) || Pad::GetRightStick().y > 1.0f)
 	{
 		if (m_cameraRot.x >= -0.7f)
 		{
 			m_cameraRot.x -= m_move.x;
 		}
 	}
+
 	// カメラの回転下回転
-	if (CheckHitKey(KEY_INPUT_NUMPAD2))
+	if (CheckHitKey(KEY_INPUT_NUMPAD2) || Pad::GetRightStick().y < -1.0f)
 	{
 		if (m_cameraRot.x <= 1.2f)
 		{
 			m_cameraRot.x += m_move.x;
 		}
 	}
+
 	// カメラの回転左回転
-	if (CheckHitKey(KEY_INPUT_NUMPAD4))
+	if (CheckHitKey(KEY_INPUT_NUMPAD4) || Pad::GetRightStick().x > 1.0f)
 	{
 		m_cameraRot.y += m_move.y;
 	}
+
 	// カメラの回転右回転
-	if (CheckHitKey(KEY_INPUT_NUMPAD6))
+	if (CheckHitKey(KEY_INPUT_NUMPAD6) || Pad::GetRightStick().x < -1.0f)
 	{
 		m_cameraRot.y -= m_move.y;
 	}
@@ -131,6 +135,6 @@ void Camera::Draw() const
 	
 	DrawFormatString(10, 100, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", m_move.x, m_move.y, m_move.z);
 	// カメラの位置から表示
-	DrawLine3D(VGet(m_cemeraGetPos.x * 100, 0.0f, m_cemeraGetPos.z * 100), VGet(m_cameraGetTarget.x, 0.0f, m_cameraGetTarget.z), 0xffffff);
+	DrawLine3D(VGet(m_cemeraGetPos.x * 1000000, 0.0f, m_cemeraGetPos.z * 1000000), VGet(m_cameraGetTarget.x, 0.0f, m_cameraGetTarget.z), 0xffffff);
 	DrawFormatString(321, 0, 0xfffff, "%f", m_cameraPosAtan2);
 }

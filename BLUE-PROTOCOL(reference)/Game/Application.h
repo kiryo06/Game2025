@@ -10,6 +10,7 @@ private:
 	void operator=(const Application&) = delete;
 
 	Size windowSize_;
+
 public:
 	/// <summary>
 	/// シングルトンオブジェクトを返す関数

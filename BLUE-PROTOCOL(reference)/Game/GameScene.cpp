@@ -69,7 +69,7 @@ void GameScene::Update(Input& input)
 
 
 #ifdef _DEBUG
-	m_pDebug->Update();
+	m_pDebug->Update(input);
 //	m_pTest->Update();
 #endif // _DEBUG
 	// Update関数はポインタを使って動的に変更される
@@ -80,7 +80,7 @@ void GameScene::Draw()
 {
 #ifdef _DEBUG
 	m_pDebug->Draw(); // デバッグ情報の描画
-	//	m_pTest->Draw();
+	m_pTest->Draw();
 #endif // _DEBUG
 
 	m_pCamera->Draw();
