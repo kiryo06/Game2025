@@ -19,12 +19,12 @@ static bool WriteSampleDataToFile(const char* filename)
 		return false;
 	}
 
-	char* dasd = const_cast<char*>("dasd");
+	char* dasd = const_cast<char*>("dasdsad");
 	// データを書き込む
 	fprintf(fp, "Name,Age,City,43,31,312,31,31,31,31,31,31\n");
 	fprintf(fp, "Yamada,25,Tokyo\n");
 	fprintf(fp, "Tanaka,30,Osaka\n");
-	fprintf(fp, "m_Data1,%s", dasd);
+	fprintf(fp, "m_Data1,%s\n", dasd);
 	fprintf(fp, "%s\n", dasd);
 	fprintf(fp, "%s\n", dasd);
 	// ファイルを閉じる

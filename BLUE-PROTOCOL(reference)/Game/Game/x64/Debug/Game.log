@@ -1,9 +1,6 @@
 ﻿  Debug.cpp
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(47,7): warning C4101: 'buffer': ローカル変数は 1 度も使われていません。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(119,34): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(119,57): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(123,19): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(123,43): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-  Input.cpp
-  コードを生成中...
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(118,34): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(118,57): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(122,19): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Debug.cpp(122,43): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   Game.vcxproj -> C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\x64\Debug\Game.exe
