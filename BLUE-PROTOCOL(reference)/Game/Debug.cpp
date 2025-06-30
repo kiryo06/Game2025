@@ -1,5 +1,10 @@
 #include "Debug.h"  
 #include <stdio.h>
+#include <istream>
+
+#include <string>
+#include <sstream>
+
 #include "Input.h"
 #include "Pad.h"
 
@@ -44,10 +49,40 @@ static bool ReadDataFromFile(const char* filename)
 		return false;
 	}
 
-	char data[256];
-	// データを読み込み
-	fscanf_s(fp, "%255s", data, (unsigned)_countof(data));
+//	char data[256];
+//	// データを読み込み
+//	fscanf_s(fp, "%255s", data, (unsigned)_countof(data));
+//
+//	// 
+//
+////	std::string neme;
+//	while (std::getline(fp, data, ','))
+//	{
+//		std::string neme;
+//		printf("読み込んだデータ: %s\n", neme.c_str());
+//	}
+
+
+	char buffer[1024];
+	std::string data;
+
+	// ファイル全体を読み込む
+	while (fgets(buffer, sizeof(buffer), fp)) {
+		data += buffer;
+	}
+
+	fclose(fp);
+
+	// データを解析
+	std::istringstream stream(data);
+	std::string token;
+	while (std::getline(stream, token, ',')) {
+		printf("読み込んだデータ: %s\n", token.c_str());
+	}
+
+
 	printf("データが読み込まれました。\n");
+//	printf("%s\n",data);
 	// ファイルを閉じる
 	fclose(fp);
 	return true;
@@ -55,10 +90,10 @@ static bool ReadDataFromFile(const char* filename)
 
 Debug::Debug():
 	m_FileData("../../BLUE_Data.csv"),
-	m_Data1("test"),
-	m_Data2("test"),
-	m_Data3("test"),
-	m_Data4("test")
+	m_Data1(),
+	m_Data2(),
+	m_Data3(),
+	m_Data4()
 {
 }
 
@@ -68,9 +103,21 @@ Debug::~Debug()
 
 void Debug::Init()
 {
-//	m_FileData = "../../BLUE_Data.csv";
-	// サンプルデータを書き込む
+	// サンプルデータを読み込み
 	ReadDataFromFile(m_FileData);
+
+	//FILE* fp = nullptr;
+	//errno_t err = fopen_s(&fp, m_FileData, "r");
+
+	//// データを読み込み  
+	//fscanf_s(fp, "%s", m_Data1);
+	//fscanf_s(fp, "%s", m_Data2);
+	//fscanf_s(fp, "%s", m_Data3);
+	//fscanf_s(fp, "%s", m_Data4);
+	//printf("%s\n", m_Data1);
+	//printf("%s\n", m_Data2);
+	//printf("%s\n", m_Data3);
+	//printf("%s\n", m_Data4);
 }
 
 void Debug::Update(Input& input)
