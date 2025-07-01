@@ -7,15 +7,12 @@ class Camera;
 class Player
 {
 private:
-	int m_model;
-	VECTOR m_pos;
-	VECTOR m_vec;
+	int m_model;				// プレイヤーのモデル
+	VECTOR m_pos;				// プレイヤーの位置
+	VECTOR m_vec;				// プレイヤーのベクトル
 	float m_rotY;
-
 	int m_hp;
-
-	float m_getCameraAtan2;
-
+	float m_getCameraAtan2;		// カメラの回転量をもとにプレイヤーの向きや移動を変更
 public:
 	Player();
 	~Player();
@@ -37,4 +34,3 @@ private:
 	bool isJumping() const;
 
 };
-

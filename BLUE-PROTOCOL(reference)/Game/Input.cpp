@@ -29,6 +29,8 @@ void Input::SetDefault()
 	{
 		{PeripheralType::pad1, PAD_INPUT_9}
 	};
+
+
 	// ƒf[ƒ^‚ğ‘‚«‚ŞDebug
 	inputTable_["DataDebug"] =
 	{

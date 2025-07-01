@@ -6,7 +6,7 @@ namespace Game
 {
 	// ’è”‚É‚Ík‚ğæ“ª‚É‚Â‚¯‚é
 	// m,s,k‚È‚Ç‚È‚Ç
-//	constexpr int kScreenWidth = 1280;
+//	constexpr int kScreenWidth = 1660;
 //	constexpr int kScreenHeight = 720;
 	constexpr int kScreenWidth = 640;
 	constexpr int kScreenHeight = 480;

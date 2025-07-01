@@ -75,6 +75,8 @@ void Player::Draw()
 {
 	// プレイヤーのモデルを描画
 	MV1DrawModel(m_model);
+
+
 #ifdef _DEBUG
 	
 	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
@@ -153,7 +155,6 @@ void Player::Move()
 
 	// プレイヤーの位置
 	MV1SetPosition(m_model, m_pos);
-
 	// プレイヤーの向いている向き
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
 }

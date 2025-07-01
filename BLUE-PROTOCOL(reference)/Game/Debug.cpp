@@ -13,6 +13,8 @@ namespace
 	constexpr int kDrawGrid = 500;
 }
 
+
+
 // ファイルにデータを書き込む関数
 static bool WriteSampleDataToFile(const char* filename)
 {
@@ -64,6 +66,7 @@ static bool ReadDataFromFile(const char* filename)
 
 
 	char buffer[1024];
+	std::string m_Data1s;
 	std::string data;
 
 	// ファイル全体を読み込む
@@ -71,18 +74,21 @@ static bool ReadDataFromFile(const char* filename)
 		data += buffer;
 	}
 
+	// ファイルを閉じる
 	fclose(fp);
 
 	// データを解析
 	std::istringstream stream(data);
 	std::string token;
-	while (std::getline(stream, token, ',')) {
+	while (std::getline(stream, token, ','))
+	{
+		m_Data1s = token.c_str();
+		printf("%s\n\n\n", m_Data1s);
 		printf("読み込んだデータ: %s\n", token.c_str());
 	}
 
 
 	printf("データが読み込まれました。\n");
-//	printf("%s\n",data);
 	// ファイルを閉じる
 	fclose(fp);
 	return true;
@@ -105,19 +111,6 @@ void Debug::Init()
 {
 	// サンプルデータを読み込み
 	ReadDataFromFile(m_FileData);
-
-	//FILE* fp = nullptr;
-	//errno_t err = fopen_s(&fp, m_FileData, "r");
-
-	//// データを読み込み  
-	//fscanf_s(fp, "%s", m_Data1);
-	//fscanf_s(fp, "%s", m_Data2);
-	//fscanf_s(fp, "%s", m_Data3);
-	//fscanf_s(fp, "%s", m_Data4);
-	//printf("%s\n", m_Data1);
-	//printf("%s\n", m_Data2);
-	//printf("%s\n", m_Data3);
-	//printf("%s\n", m_Data4);
 }
 
 void Debug::Update(Input& input)
