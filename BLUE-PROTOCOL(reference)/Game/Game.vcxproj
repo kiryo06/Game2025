@@ -147,6 +147,8 @@
     <ClCompile Include="ColliderCapsule3D.cpp" />
     <ClCompile Include="ColliderCircle3D.cpp" />
     <ClCompile Include="ColliderLine3D.cpp" />
+    <ClCompile Include="CsvLoad.cpp" />
+    <ClCompile Include="CsvWrite.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="ColliderSphere3D.h" />
     <ClInclude Include="ColliderData.h" />
     <ClInclude Include="ColliderLine3D.h" />
+    <ClInclude Include="CsvLoad.h" />
+    <ClInclude Include="CsvWrite.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="game.h" />

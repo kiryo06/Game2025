@@ -5,11 +5,12 @@ class Input;
 class Debug
 {
 private:
-	const char* m_FileData;
-	char* m_Data1[256];
+//	const char* m_FileData;
+	std::vector<std::vector<std::string>> m_FileData;
+	char* m_Data1;
+//	char* m_Data2[256];
+//	const char* m_Data1[256];
 	const char* m_Data2[256];
-	const char* m_Data3[256];
-	char* m_Data4[256];
 public:
 	Debug();
 	~Debug();

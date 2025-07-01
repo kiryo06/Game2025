@@ -2,12 +2,15 @@
 #include <stdio.h>
 #include <istream>
 
-#include <string>
+//#include <fstream>
 #include <sstream>
+//#include <vector>
+#include <string>
 
 #include "Input.h"
 #include "Pad.h"
 
+#include "CsvLoad.h"
 namespace
 {
 	constexpr int kDrawGrid = 500;
@@ -66,7 +69,6 @@ static bool ReadDataFromFile(const char* filename)
 
 
 	char buffer[1024];
-	std::string m_Data1s;
 	std::string data;
 
 	// ファイル全体を読み込む
@@ -82,8 +84,6 @@ static bool ReadDataFromFile(const char* filename)
 	std::string token;
 	while (std::getline(stream, token, ','))
 	{
-		m_Data1s = token.c_str();
-		printf("%s\n\n\n", m_Data1s);
 		printf("読み込んだデータ: %s\n", token.c_str());
 	}
 
@@ -95,12 +95,12 @@ static bool ReadDataFromFile(const char* filename)
 }
 
 Debug::Debug():
-	m_FileData("../../BLUE_Data.csv"),
 	m_Data1(),
-	m_Data2(),
-	m_Data3(),
-	m_Data4()
+	m_Data2("")
 {
+	CsvLoad load;
+	m_FileData = load.LoadFile("../../BLUE_Data.csv");
+
 }
 
 Debug::~Debug()
@@ -110,16 +110,11 @@ Debug::~Debug()
 void Debug::Init()
 {
 	// サンプルデータを読み込み
-	ReadDataFromFile(m_FileData);
+//	ReadDataFromFile(m_FileData);
 }
 
 void Debug::Update(Input& input)
 {
-	if (input.IsTrigger("DataDebug"))
-	{
-		// サンプルデータを書き込む
-		WriteSampleDataToFile(m_FileData);
-	}
 }
 
 void Debug::Draw()
@@ -127,6 +122,8 @@ void Debug::Draw()
 //	DrawAxis();
 	DrawGrid();
 }
+
+
 
 // DrawString3D の代替関数を定義
 void DrawString3D(const VECTOR& position, const char* text, int size, unsigned int color)
@@ -146,9 +143,9 @@ void Debug::DrawAxis() const
 	DrawLine3D(VGet(0, 0, 0), VGet(0, 100, 0), 0x00ff00); // Y軸
 	DrawLine3D(VGet(0, 0, 0), VGet(0, 0, 100), 0x0000ff); // Z軸
 	// 軸のラベルを描画
-	DrawString3D(VGet(100.0f, 10.0f, 10.0f), "X", 20, 0xff0000);
-	DrawString3D(VGet(10, 100, 10), "Y", 20, 0x00ff00);
-	DrawString3D(VGet(10, 10, 100), "Z", 20, 0x0000ff);
+	DrawString3D(VGet(100.0f,  10.0f,  10.0f), "X", 20, 0xff0000);
+	DrawString3D(VGet( 10.0f, 100.0f,  10.0f), "Y", 20, 0x00ff00);
+	DrawString3D(VGet( 10.0f,  10.0f, 100.0f), "Z", 20, 0x0000ff);
 }
 
 void Debug::DrawGrid() const
