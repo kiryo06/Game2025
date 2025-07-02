@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Bose.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="ColliderCapsule3D.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="CsvWrite.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="GameOption.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -166,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Bose.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collidable.h" />
     <ClInclude Include="ColliderCapsule3D.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="GameOption.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Input.h" />

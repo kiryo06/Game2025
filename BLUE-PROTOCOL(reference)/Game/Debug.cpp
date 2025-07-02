@@ -1,106 +1,31 @@
 #include "Debug.h"  
 #include <stdio.h>
 #include <istream>
-
-//#include <fstream>
-#include <sstream>
-//#include <vector>
-#include <string>
-
 #include "Input.h"
 #include "Pad.h"
-
 #include "CsvLoad.h"
+
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <cstdlib>
+
 namespace
 {
 	constexpr int kDrawGrid = 500;
+	constexpr int kLine = 3;
+	constexpr int kColumn = 6;
 }
 
-
-
-// ファイルにデータを書き込む関数
-static bool WriteSampleDataToFile(const char* filename)
-{
-	// はじめはnullptrを入れておく
-	FILE* fp = nullptr;
-	errno_t err = fopen_s(&fp, filename, "w");
-	if (err != 0 || fp == nullptr) {
-		printf("ファイルが開けませんでした。\n");
-		return false;
-	}
-
-	char* dasd = const_cast<char*>("dasdsad");
-	// データを書き込む
-	fprintf(fp, "Name,Age,City,43,31,312,31,31,31,31,31,31\n");
-	fprintf(fp, "Yamada,25,Tokyo\n");
-	fprintf(fp, "Tanaka,30,Osaka\n");
-	fprintf(fp, "m_Data1,%s\n", dasd);
-	fprintf(fp, "%s\n", dasd);
-	fprintf(fp, "%s\n", dasd);
-	// ファイルを閉じる
-	fclose(fp);
-	printf("データが書き込まれました。\n");
-	return true;
-}
-
-// ファイルからデータを読み込む関数
-static bool ReadDataFromFile(const char* filename)
-{
-	// はじめはnullptrを入れておく
-	FILE* fp = nullptr;
-	errno_t err = fopen_s(&fp, filename, "r");
-	if (err != 0 || fp == nullptr) {
-		printf("ファイルが開けませんでした。\n");
-		return false;
-	}
-
-//	char data[256];
-//	// データを読み込み
-//	fscanf_s(fp, "%255s", data, (unsigned)_countof(data));
-//
-//	// 
-//
-////	std::string neme;
-//	while (std::getline(fp, data, ','))
-//	{
-//		std::string neme;
-//		printf("読み込んだデータ: %s\n", neme.c_str());
-//	}
-
-
-	char buffer[1024];
-	std::string data;
-
-	// ファイル全体を読み込む
-	while (fgets(buffer, sizeof(buffer), fp)) {
-		data += buffer;
-	}
-
-	// ファイルを閉じる
-	fclose(fp);
-
-	// データを解析
-	std::istringstream stream(data);
-	std::string token;
-	while (std::getline(stream, token, ','))
-	{
-		printf("読み込んだデータ: %s\n", token.c_str());
-	}
-
-
-	printf("データが読み込まれました。\n");
-	// ファイルを閉じる
-	fclose(fp);
-	return true;
-}
 
 Debug::Debug():
-	m_Data1(),
-	m_Data2("")
+	Sad()
 {
+	// 3行6列の空文字列で初期化したい場合
+	Sad = std::vector<std::vector<std::string>>(kLine, std::vector<std::string>(kColumn, ""));
 	CsvLoad load;
-	m_FileData = load.LoadFile("../../BLUE_Data.csv");
-
+	std::vector<std::vector<std::string>> data = load.LoadFile("../../BLUE_Data.csv");
+	SetDebugData(data);
 }
 
 Debug::~Debug()
@@ -109,12 +34,29 @@ Debug::~Debug()
 
 void Debug::Init()
 {
-	// サンプルデータを読み込み
-//	ReadDataFromFile(m_FileData);
+	for (int i = 0; i < kLine; ++i)
+	{
+		printf("設定保存: %s, 移動速度: %s, 総フレーム: %s, 回転速度: %s, 加速度: %s, 注視点: %s\n",
+			Sad[i][0].c_str(),
+			Sad[i][1].c_str(),
+			Sad[i][2].c_str(),
+			Sad[i][3].c_str(),
+			Sad[i][4].c_str(),
+			Sad[i][5].c_str()
+		);
+	}
+	int test = 0;
+	test = std::stoi(Sad[1][2]);
+	test = test + 20;
+	printf("%d", test);
 }
 
 void Debug::Update(Input& input)
 {
+	if (input.IsTrigger("DataDebug"))
+	{
+		WriteSadToCsv("../../BLUE_Data.csv");
+	}
 }
 
 void Debug::Draw()
@@ -136,6 +78,90 @@ void DrawString3D(const VECTOR& position, const char* text, int size, unsigned i
 	// 変換された座標に文字列を描画
 	DrawStringToHandle(static_cast<int>(screenPos.x), static_cast<int>(screenPos.y), text, size, color);
 }
+
+// データを読み込んで、読み込んだデータを保存する
+void Debug::SetDebugData(std::vector<std::vector<std::string>> debugData)
+{
+	int j = 0;
+	int NotEnough = 0;
+	for (auto& item : debugData)
+	{
+		if (kLine <= j)
+		{
+			NotEnough++;
+			printf("読み込んだデータを保存するためのスペースがあと%d行足りません\n", NotEnough);
+		}
+		else
+		{
+			DebugData pushData;
+			// 名前を読み込んで保存
+			pushData.kSetName = item[static_cast<int>(DebugDataSort::kName)];
+			Sad[j][0] = pushData.kSetName;
+
+			// 移動速度を読み込んで保存
+			pushData.moveSpeed = item[static_cast<int>(DebugDataSort::kMoveSpeed)];
+			Sad[j][1] = pushData.moveSpeed;
+
+			// を読み込んで保存
+			pushData.totalFrame = item[static_cast<int>(DebugDataSort::kTotalFrame)];
+			Sad[j][2] = pushData.totalFrame;
+
+			// を読み込んで保存
+			pushData.attackFrame = item[static_cast<int>(DebugDataSort::kAttackFrame)];
+			Sad[j][3] = pushData.attackFrame;
+
+			// を読み込んで保存
+			pushData.speed = item[static_cast<int>(DebugDataSort::kSpeed)];
+			Sad[j][4] = pushData.speed;
+
+			// を読み込んで保存
+			pushData.animationName = item[static_cast<int>(DebugDataSort::kTorigerName)];
+			Sad[j][5] = pushData.animationName;
+
+			m_debugData[item[static_cast<int>(DebugDataSort::kName)]] = pushData;
+			j++;
+		}
+	}
+}
+
+// Sadの内容をCSVファイルに書き込む
+void Debug::WriteSadToCsv(const std::string& filename)
+{
+	std::ofstream ofs(filename);
+	if (!ofs.is_open()) {
+		printf("ファイル %s を開けませんでした\n", filename.c_str());
+		return;
+	}
+
+	// ヘッダー行を書き込む
+	ofs << "設定保存,移動速度,総フレーム,回転速度,加速度,注視点\n";
+
+	// Sadの内容を書き込む
+	for (const auto& row : Sad) {
+		for (size_t i = 0; i < row.size(); ++i) {
+			// カンマやダブルクォートを含む場合はクォートで囲む
+			std::string field = row[i];
+			if (field.find(',') != std::string::npos || field.find('"') != std::string::npos)
+			{
+				std::string quoted;
+				quoted += '"';
+				for (char c : field)
+				{
+					if (c == '"') quoted += "\"\"";
+					else quoted += c;
+				}
+				quoted += '"';
+				field = quoted;
+			}
+			ofs << field;
+			if (i != row.size() - 1) ofs << ",";
+		}
+		ofs << "\n";
+	}
+	ofs.close();
+	printf("ファイル %s に保存しました\n", filename.c_str());
+}
+
 
 void Debug::DrawAxis() const
 {

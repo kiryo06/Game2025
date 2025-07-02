@@ -104,7 +104,7 @@ void Camera::Update(Player* m_pPlayer)
 	VECTOR toCameraXY = VTransform(toCameraX, cameraRotMtxY);
 
 	// ƒvƒŒƒCƒ„[’Ç]
-	VECTOR toCameraPlayerPos = VAdd(toCameraXY, m_pPlayer->GetPos());
+	VECTOR toCameraPlayerPos = VAdd(toCameraXY, VAdd(m_pPlayer->GetPos(),VGet(0,600,0)));
 	VECTOR toCameraPlayerTarget = VAdd(m_targetPos, m_pPlayer->GetPos());
 
 

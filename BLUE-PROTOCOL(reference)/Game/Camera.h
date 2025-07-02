@@ -14,6 +14,7 @@ private:
 	float m_cameraPosAtan2;		// カメラのアークタンジェントを保存するための変数
 	VECTOR m_cemeraGetPos;		// カメラの位置を取得
 	VECTOR m_cameraGetTarget;	// カメラの注視点を取得
+
 public:
 	Camera();
 	~Camera();

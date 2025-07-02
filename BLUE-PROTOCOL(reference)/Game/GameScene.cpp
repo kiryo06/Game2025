@@ -6,7 +6,7 @@
 #include "GameScene.h"
 #include <cassert>
 #include "Player.h"
-//#include "Enemy.h"
+#include "Bose.h"
 #include "Camera.h"
 #include "Debug.h"
 #include "Test.h"
@@ -24,19 +24,22 @@ void GameScene::Init()
 	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
 	
 	m_playerHandle = MV1LoadModel("data/model/player.mv1");
-//	m_enemyHandle = MV1LoadModel("data/model/enemy.mv1");
+	m_boseHandle = MV1LoadModel("data/model/bose.mv1");
 //	m_fieldHandle = MV1LoadModel("data/model/field.mv1");
 	
 	// カメラの初期化
 	m_pCamera = std::make_shared<Camera>();
 	// プレイヤーの初期化
 	m_pPlayer = std::make_shared<Player>();
+	// ボスの初期化
+	m_pBose = std::make_shared<Bose>();
+
 	m_pPlayer->SetModel(m_playerHandle);
+	m_pBose->SetModel(m_boseHandle);
 
 	m_pCamera->Init();
 	m_pPlayer->Init();
-	// 
-//	m_pEnemy = std::make_shared<Enemy>();
+	m_pBose->Init();
 
 
 
@@ -65,6 +68,7 @@ void GameScene::Update(Input& input)
 {
 	m_pCamera->Update(m_pPlayer.get());
 	m_pPlayer->Update(input, m_pCamera.get());
+	m_pBose->Update(m_pPlayer.get());
 
 
 
@@ -85,6 +89,7 @@ void GameScene::Draw()
 
 	m_pCamera->Draw();
 	m_pPlayer->Draw();
+	m_pBose->Draw();
 
 	// Draw関数はポインタを使って動的に変更される
 	(this->*pDrawFunc)();
