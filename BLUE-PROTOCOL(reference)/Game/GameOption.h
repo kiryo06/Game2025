@@ -22,23 +22,23 @@ public:
 	/// </summary>
 	struct ControllerOptionData
 	{
-		std::string kSetName				= "empty";							// 設定の種類
-		std::string kUpDownInversion		= "empty";					// カメラの上下反転
-		std::string kLeftRightInversion		= "empty";				// カメラの左右の反転
-		std::string kHorizontalSensitivity	= "empty";			// カメラの水平感度
-		std::string kVerticalSensitivity	= "empty";				// カメラの垂直感度
-		std::string kDecision				= "empty";						// 決定
-		std::string kCancel					= "empty";							// キャンセル
-		std::string kJump			= "empty";		// ジャンプ
-		std::string kDash			= "empty";		// ダッシュ
-		std::string kSetName			= "empty";		// 攻撃
-		std::string kSetName			= "empty";		// スキル1
-		std::string kSetName			= "empty";		// スキル2
-		std::string kSetName			= "empty";		// 回避
-		std::string kSetName			= "empty";		// ロックオン
-		std::string kSetName			= "empty";		// しゃがむ
-		std::string kSetName			= "empty";		// メニュー
-		std::string kSetName			= "empty";		// オプション
+		std::string name					= "empty";		// 設定の種類
+		std::string upDownInversion			= "empty";		// カメラの上下反転
+		std::string leftRightInversion		= "empty";		// カメラの左右の反転
+		std::string horizontalSensitivity	= "empty";		// カメラの水平感度
+		std::string verticalSensitivity		= "empty";		// カメラの垂直感度
+		std::string decision				= "empty";		// 決定
+		std::string cancel					= "empty";		// キャンセル
+		std::string jump					= "empty";		// ジャンプ
+		std::string dash					= "empty";		// ダッシュ
+		std::string attack					= "empty";		// 攻撃
+		std::string skill_1					= "empty";		// スキル1
+		std::string skill_2					= "empty";		// スキル2
+		std::string avoidance				= "empty";		// 回避
+		std::string lockOn					= "empty";		// ロックオン
+		std::string squat					= "empty";		// しゃがむ
+		std::string menu					= "empty";		// メニュー
+		std::string option					= "empty";		// オプション
 	};
 
 	/// <summary>
@@ -46,8 +46,8 @@ public:
 	/// </summary>
 	struct AudioOptionData
 	{
-		std::string kSetName	= "empty";
-		std::string kVolume		= "empty";
+		std::string name					= "empty";		// 設定の種類
+		std::string volume					= "empty";		// ボリューム
 	};
 
 	GameOption();
@@ -56,5 +56,38 @@ public:
 	void Update();
 	void Draw();
 private:
+	/// <summary>
+	/// ControllerOptionData.csvファイルに入っている順番
+	/// </summary>
+	enum class ControllerOptionDataSort
+	{
+		kName,								// 設定の種類
+		kUpDownInversion,					// カメラの上下反転
+		kLeftRightInversion,				// カメラの左右の反転
+		kHorizontalSensitivity,				// カメラの水平感度
+		kVerticalSensitivity,				// カメラの垂直感度
+		kDecision,							// 決定
+		kCancel,							// キャンセル
+		kJump,								// ジャンプ
+		kDash,								// ダッシュ
+		kAttack,							// 攻撃
+		kSkill_1,							// スキル1
+		kSkill_2,							// スキル2
+		kAvoidance,							// 回避
+		kLockOn,							// ロックオン
+		kSquat,								// しゃがむ
+		kMenu,								// メニュー
+		kOption								// オプション
+	};
+
+	/// <summary>
+	/// AudioOptionData.csvファイルに入っている順番
+	/// </summary>
+	enum class AudioOptionDataSort
+	{
+		kName,								// 設定の種類
+		kVolume								// ボリューム
+	};
+
 };
 
