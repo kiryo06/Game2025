@@ -71,7 +71,7 @@ void TitleScene::FadeOutUpdate(Input& input)
 void TitleScene::NormalUpdate(Input& input)
 {
 	// ÉLÅ[Ç™âüÇ≥ÇÍÇÈÇ‹Ç≈âΩÇ‡ÇµÇ»Ç¢
-	if (input.IsTrigger("next"))
+	if (input.IsTrigger("next")|| input.IsTrigger("START"))
 	{
 		pUpdateFunc = &TitleScene::FadeOutUpdate;
 		pDrawFunc = &TitleScene::FadeDraw;

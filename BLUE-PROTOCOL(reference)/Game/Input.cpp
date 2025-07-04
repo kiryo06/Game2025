@@ -12,31 +12,50 @@ void Input::SetDefault()
 {
 	inputTable_["next"] =
 	{
-		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_8}
+		{PeripheralType::keybd, KEY_INPUT_RETURN}
+//		{PeripheralType::pad1, PAD_INPUT_8}
 	};
-	// ジャンプ処理
-	inputTable_["jump"] =
+
+	inputTable_["Aボタン"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_1}
 	};
-	inputTable_["shoot"] =
+	inputTable_["Bボタン"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_2}
 	};
-	// プレイヤーを初期位置に戻す
-	inputTable_["Debug"] =
+	inputTable_["Xボタン"] =
 	{
-		{PeripheralType::pad1, PAD_INPUT_9}
+		{PeripheralType::pad1, PAD_INPUT_3}
 	};
-
-
-	// データを書き込むDebug
-	inputTable_["DataDebug"] =
+	inputTable_["Yボタン"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_4}
+	};
+	inputTable_["Lボタン"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_5}
+	};
+	inputTable_["Rボタン"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_6}
+	};
+	inputTable_["BACK"] =
 	{
 		{PeripheralType::pad1, PAD_INPUT_7}
 	};
-
+	inputTable_["START"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_8}
+	};
+	inputTable_["左スティック押しこみ"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_9}
+	};
+	inputTable_["右スティック押しこみ"] =
+	{
+		{PeripheralType::pad1, PAD_INPUT_10}
+	};
 
 #if false
 	// Aボタン

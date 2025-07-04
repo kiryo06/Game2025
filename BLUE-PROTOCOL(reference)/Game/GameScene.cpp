@@ -124,7 +124,7 @@ void GameScene::FadeOutUpdate(Input& input)
 void GameScene::NormalUpdate(Input& input)
 {
 	// ÉLÅ[Ç™âüÇ≥ÇÍÇÈÇ‹Ç≈âΩÇ‡ÇµÇ»Ç¢
-	if (input.IsTrigger("next"))
+	if (input.IsTrigger("next") || input.IsTrigger("START"))
 	{
 		pUpdateFunc = &GameScene::FadeOutUpdate;
 		pDrawFunc = &GameScene::FadeDraw;

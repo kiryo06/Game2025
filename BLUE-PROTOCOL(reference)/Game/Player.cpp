@@ -53,7 +53,7 @@ void Player::Update(Input& input, Camera *camera)
 	// ジャンプ処理
 	if (!isJumping())
 	{
-		if (input.IsTrigger("jump"))
+		if (input.IsTrigger("Aボタン"))
 		{
 			m_vec.y = kJumpPower;
 		}
@@ -63,7 +63,7 @@ void Player::Update(Input& input, Camera *camera)
 
 #ifdef _DEBUG
 	// プレイヤーのを初期位置に戻す
-	if (input.IsTrigger("Debug"))
+	if (input.IsTrigger("左スティック押しこみ"))
 	{
 		m_pos = VGet(0.0f, 0.0f, 0.0f);
 	}

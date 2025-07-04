@@ -54,7 +54,7 @@ void Debug::Init()
 
 void Debug::Update(Input& input)
 {
-	if (input.IsTrigger("DataDebug"))
+	if (input.IsTrigger("BACK"))
 	{
 		WriteSadToCsv("../../BLUE_Data.csv");
 	}
