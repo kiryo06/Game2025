@@ -34,9 +34,10 @@ Debug::~Debug()
 
 void Debug::Init()
 {
+	printf("設定保存, 移動速度, 総フレーム, 回転速度, 加速度, 注視点\n");
 	for (int i = 0; i < kLine; ++i)
 	{
-		printf("設定保存: %s, 移動速度: %s, 総フレーム: %s, 回転速度: %s, 加速度: %s, 注視点: %s\n",
+		printf("%1s, %1s, %1s, %1s, %1s, %1s\n",
 			Sad[i][0].c_str(),
 			Sad[i][1].c_str(),
 			Sad[i][2].c_str(),
@@ -45,10 +46,10 @@ void Debug::Init()
 			Sad[i][5].c_str()
 		);
 	}
-	int test = 0;
-	test = std::stoi(Sad[1][2]);
-	test = test + 20;
-	printf("%d", test);
+//	int test = 0;
+//	test = std::stoi(Sad[1][2]);
+//	test = test + 20;
+//	printf("%d", test);
 }
 
 void Debug::Update(Input& input)
