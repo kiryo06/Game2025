@@ -26,7 +26,7 @@ Camera::~Camera()
 void Camera::Init()const
 {
 	// ƒJƒƒ‰‚ÌNear,Far
-	SetCameraNearFar(0.0f, 2000.0f);
+	SetCameraNearFar(0.1f, 100000.0f);
 	SetCameraPositionAndTarget_UpVecY(m_pos, m_targetPos);
 	SetupCamera_Perspective(48.0f * DX_PI_F / 180.0f);
 
