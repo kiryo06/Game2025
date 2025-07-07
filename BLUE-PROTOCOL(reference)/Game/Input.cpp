@@ -112,19 +112,20 @@ void Input::SetDefault()
 }
 
 
-void Input::SetTempDefault()
-{
-	tempInputTable_["next"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_RETURN},
-		{PeripheralType::pad1, PAD_INPUT_1} // A
-	};
-	tempInputTable_["pause"] =
-	{
-		{PeripheralType::keybd, KEY_INPUT_P},
-		{PeripheralType::pad1, PAD_INPUT_8} // START
-	};
-}
+//void Input::SetTempDefault()
+//{
+//	tempInputTable_["next"] =
+//	{
+//		{PeripheralType::keybd, KEY_INPUT_RETURN},
+//		{PeripheralType::pad1, PAD_INPUT_1} // A
+// 
+//	};
+//	tempInputTable_["pause"] =
+//	{
+//		{PeripheralType::keybd, KEY_INPUT_P},
+//		{PeripheralType::pad1, PAD_INPUT_8} // START
+//	};
+//}
 
 
 void Input::CommitEdittedInputTable()

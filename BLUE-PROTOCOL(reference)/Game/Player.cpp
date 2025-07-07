@@ -83,7 +83,7 @@ void Player::Draw()
 	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
 
 	// 当たり判定のデバック表示
-	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
+//	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
 	DrawSphere3D(VGet(0, 80, 0), 16, 16, 0x00ff00, 0x00ff00, false);
 	DrawLine3D(GetColPos(), VGet(0, 80, 0), 0x00ff00);
 #endif // _DEBUG
