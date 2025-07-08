@@ -1,3 +1,6 @@
-﻿  Bose.cpp
-C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Bose.cpp(53,17): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+﻿  Boss.cpp
+C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\Boss.cpp(58,17): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  GameScene.cpp
+  TitleScene.cpp
+  コードを生成中...
   Game.vcxproj -> C:\Users\立石 喜遼\Documents\GitHub\Game2025\BLUE-PROTOCOL(reference)\Game\x64\Debug\Game.exe

@@ -3,7 +3,7 @@
 #include <memory>
 
 class Player;
-class Bose;
+class Boss;
 class Camera;
 class Debug;
 class Test;
@@ -33,11 +33,11 @@ public:
 private:
 	int m_frameCount = 0;	// フレームカウント
 	int m_playerHandle;		// プレイヤーのモデル
-	int m_boseHandle;		// ボスのモデル
+	int m_bossHandle;		// ボスのモデル
 
 
 	std::shared_ptr<Player> m_pPlayer;
-	std::shared_ptr<Bose> m_pBose;
+	std::shared_ptr<Boss> m_pBoss;
 	std::shared_ptr<Camera> m_pCamera;
 	std::shared_ptr<Debug> m_pDebug;
 	std::shared_ptr<Test> m_pTest;

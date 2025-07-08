@@ -1,17 +1,20 @@
-#include "Bose.h"
+#include "Boss.h"
 #include "Player.h"
 namespace
 {
-	constexpr const VECTOR BosePos = { 0.0f, 0.0f, -1000.0f };
-	constexpr const float BoseRad  = { 1000.0f};
-	constexpr const float Close = {1000.0f};
+	constexpr const int CloseFrame = 60 * 2;	// 近距離のフレーム数
+	constexpr const int FarFrame = 60 * 2;		// 遠距離のフレーム数
+	constexpr const float BossRad  = { 1000.0f};
+	constexpr const float Close = {8000.0f};
 	constexpr const float Far = {10000.0f};
+	constexpr const VECTOR BossPos = { 0.0f, 0.0f, -1000.0f };
 }
 
-Bose::Bose():
+Boss::Boss():
 	m_model(-1),
-	m_frameCount(0),
-	m_rad(200.0f),
+	m_frameCountClose(0),
+	m_frameCountFar(0),
+	m_rad(0.0f),
 	m_pos(0.0f, 0.0f, 0.0f),
 	m_close(false),
 	m_far(false),
@@ -20,24 +23,26 @@ Bose::Bose():
 {
 }
 
-Bose::~Bose()
+Boss::~Boss()
 {
 }
 
-void Bose::Init()
+void Boss::Init()
 {
-	m_pos = BosePos;
-	m_rad = BoseRad;
+	m_pos = BossPos;
+	m_rad = BossRad;
 
 }
 
-void Bose::Update(Player* m_pPlayer)
+void Boss::Update(Player* m_pPlayer)
 {
 	m_playerPos = m_pPlayer->GetPos();
 	m_playerRad = m_pPlayer->GetColRadius();
 	// ボスが攻撃するために必要な距離の条件
 	CloseDistance();
 	FarDistance();
+
+	// ボスの攻撃
 
 
 	VECTOR das;
@@ -61,7 +66,7 @@ void Bose::Update(Player* m_pPlayer)
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY,0));
 }
 
-void Bose::Draw()
+void Boss::Draw()
 {
 	// ボスのモデルを描画
 	MV1DrawModel(m_model);
@@ -72,7 +77,7 @@ void Bose::Draw()
 	DrawCapsule3D(m_pos, m_pos, Close,16,0xffff00,0xffff00,false);
 	// 遠距離のターゲット
 	DrawCapsule3D(m_pos, m_pos, Far,16,0xffff00,0xffff00,false);
-	printf("%d\n", m_frameCount);
+	printf("近い:%d遠い:%d\n", m_frameCountClose, m_frameCountFar);
 	if (m_close && !m_far)
 	{
 		DrawFormatString(20, 100, 0xffffff, "近距離\n");
@@ -93,7 +98,7 @@ void Bose::Draw()
 #endif // _DEBUG
 }
 
-void Bose::CloseDistance()
+void Boss::CloseDistance()
 {
 	float distX = m_pos.x - m_playerPos.x;
 	float distY = m_pos.y - m_playerPos.y;
@@ -104,28 +109,29 @@ void Bose::CloseDistance()
 	if ((dist) < (m_playerRad + Close))
 	{
 		m_close = true;
-		m_frameCount = 0;
-#ifdef _DEBUG
-//			printf("近距離\n");
-#endif // _DEBUG
+		m_frameCountClose = 0;
 	}
 	else
 	{
 		// 範囲外ではあるがまだ近いフラグが立っている場合
 		if (m_close)
 		{
-			if (m_frameCount == 60 * 2)
+			if (m_frameCountClose == CloseFrame)
 			{
+				// n秒経過したら近いフラグを外す
 				m_close = false;
-				m_frameCount = 0;
+				// 遠いフラグを立てる
+				// ここで建てないと近いフラグが立っている状態で遠距離の範囲を超えたときにバグが発生する
+				m_far = true;
+				m_frameCountClose = 0;
 				return;
 			}
-			m_frameCount++;
+			m_frameCountClose++;
 		}
 	}
 }
 
-void Bose::FarDistance()
+void Boss::FarDistance()
 {
 	float distX = m_pos.x - m_playerPos.x;
 	float distY = m_pos.y - m_playerPos.y;
@@ -137,29 +143,30 @@ void Bose::FarDistance()
 	{
 		if (!m_close)
 		{
+			// 近いフラグが立っていない場合は遠いフラグを立てる
 			m_far = true;
-			m_frameCount = 0;
-#ifdef _DEBUG
-//			printf("遠距離\n");
-#endif // _DEBUG
+			m_frameCountFar = 0;
 		}
 		else
 		{
+			// 近いフラグが立っている場合は遠いフラグを外す
 			m_far = false;
+			m_frameCountFar = 0;
 		}
 	}
 	else
 	{
-		// 範囲外ではあるがまだ遠いフラグが立っている場合
+		// 範囲外ではあるがまだ遠いフラグを立てておく時間
 		if (m_far)
 		{
-			if (m_frameCount == 60 * 2)
+			if (m_frameCountFar == FarFrame)
 			{
+				// n秒経過したら遠いフラグを外す
 				m_far = false;
-				m_frameCount = 0;
+				m_frameCountFar = 0;
 				return;
 			}
-			m_frameCount++;
+			m_frameCountFar++;
 		}
 	}
 }
