@@ -110,8 +110,8 @@ void Camera::Update(Player* m_pPlayer)
 
 	// カメラ設定、注視点の更新
 	SetCameraPositionAndTarget_UpVecY(toCameraPlayerPos, toCameraPlayerTarget);
-	DrawFormatString(10, 132, 0xff0000, "%f", m_cameraRot.x);
-	DrawFormatString(10, 116, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", toCameraX.x, toCameraX.y, toCameraX.z);
+//	DrawFormatString(10, 132, 0xff0000, "%f", m_cameraRot.x);
+//	DrawFormatString(10, 116, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", toCameraX.x, toCameraX.y, toCameraX.z);
 
 
 	// カメラの位置をNormした値を入れる変数
@@ -133,8 +133,8 @@ void Camera::Draw() const
 {
 
 	
-	DrawFormatString(10, 100, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", m_move.x, m_move.y, m_move.z);
+//	DrawFormatString(10, 100, 0xff0000, "Move X:%.3f | Move Y:%.3f | Move Z:%.3f", m_move.x, m_move.y, m_move.z);
 	// カメラの位置から表示
 	DrawLine3D(VGet(m_cemeraGetPos.x * 1000000, 0.0f, m_cemeraGetPos.z * 1000000), VGet(m_cameraGetTarget.x, 0.0f, m_cameraGetTarget.z), 0xffffff);
-	DrawFormatString(321, 0, 0xfffff, "%f", m_cameraPosAtan2);
+//	DrawFormatString(321, 0, 0xfffff, "%f", m_cameraPosAtan2);
 }

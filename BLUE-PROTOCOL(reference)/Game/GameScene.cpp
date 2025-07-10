@@ -82,14 +82,15 @@ void GameScene::Update(Input& input)
 
 void GameScene::Draw()
 {
-#ifdef _DEBUG
-	m_pDebug->Draw(); // デバッグ情報の描画
-	m_pTest->Draw();
-#endif // _DEBUG
-
 	m_pCamera->Draw();
 	m_pPlayer->Draw();
 	m_pBoss->Draw();
+
+#ifdef _DEBUG
+	m_pDebug->Draw(); // デバッグ情報の描画
+	m_pTest->Draw();
+	m_pBoss->DebugFormatDraw();
+#endif // _DEBUG
 
 	// Draw関数はポインタを使って動的に変更される
 	(this->*pDrawFunc)();

@@ -7,7 +7,7 @@
 #include <string>
 
 Application::Application():
-	windowSize_{ 1280, 640 }// 初期ウィンドウサイズを設定
+	windowSize_{ Game::kScreenWidth, Game::kScreenHeight }// 初期ウィンドウサイズを設定
 {
 }
 

@@ -79,8 +79,8 @@ void Player::Draw()
 
 #ifdef _DEBUG
 	
-	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
-	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
+//	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
+//	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
 
 	// 当たり判定のデバック表示
 	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);

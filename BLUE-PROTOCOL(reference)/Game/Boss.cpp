@@ -2,12 +2,19 @@
 #include "Player.h"
 namespace
 {
+	constexpr	const	int		DrawFormatPos	= 16;						// 初期位置を設定
+	constexpr	const	int		RandMin			=  1;						// ランダム数の最小値
+	constexpr	const	int		RandMax			= 12;						// ランダム数の最大値
 	constexpr	const	int		CloseFrame		= 60 * 2;					// 近距離のフレーム数
 	constexpr	const	int		FarFrame		= 60 * 3;					// 遠距離のフレーム数
 	constexpr	const	int		TargetFrame		= 60 * 4;					// ターゲットのフレーム数
 	constexpr	const	int		TActionFrame	= 60 * 2;					// ターゲットのフレーム数
 	constexpr	const	int		FActionFrame	= 60 * 2;					// ターゲットのフレーム数
 	constexpr	const	int		CActionFrame	= 60 * 2;					// ターゲットのフレーム数
+	constexpr	const	int		OnColor			= 0x33ffcc;					// ONになった時の色
+	constexpr	const	int		OffColor		= 0xd3d3d3;					// OFFになった時の色
+	constexpr	const	int		OkColor			= 0x33ff66;					// OKになった時の色
+	constexpr	const	int		NotColor		= 0xff5555;					// NOTになった時の色
 	constexpr	const	float	BossRad			= {  1000.0f };				// ボスの半径
 	constexpr	const	float	Close			= {  4000.0f };				// 近距離かどうかの判定距離
 	constexpr	const	float	Far				= {  7000.0f };				// 遠距離かどうかの判定距離
@@ -76,7 +83,7 @@ void Boss::Update(Player* m_pPlayer)
 	// 距離に合わせて何をするかを判断する
 	DecideAction();
 	// ボスの移動
-	MoveBoss();
+	MoveBoss(dist);
 
 	// ボスの攻撃
 	MeleeAttack();
@@ -118,38 +125,34 @@ void Boss::Draw()
 	DrawCapsule3D(m_pos, m_pos, Far,16,0xffff00,0xffff00,false);
 	// ターゲットできる範囲
 	DrawCapsule3D(m_pos, m_pos, Target, 16, 0xffff00, 0xffff00, false);
-
-	printf("近い:%d遠い:%dターゲット:%d\n", m_frameCountClose, m_frameCountFar,m_frameCountTarget);
-	printf("移動:%d\n", m_frameCountTAction);
-	if (m_close)
-	{
-		DrawFormatString(20, 150, 0xffffff, "近距離\n");
-	}
-	if (m_far)
-	{
-		DrawFormatString(20, 166, 0xffffff, "遠距離\n");
-	}
-	if (m_target)
-	{
-		DrawFormatString(20, 182, 0x00ff00, "ターゲット中\n");
-	}
-	if(!m_close && !m_far && !m_target)
-	{
-		DrawFormatString(20, 198, 0xff0000, "範囲外\n");
-	}
-
-	if (m_moveUp|| m_moveDown)
-	{
-		DrawFormatString(20, 204, 0x00ff00, "移動中\n");
-	}
-
-	if (!m_moveUp && !m_moveDown)
-	{
-		DrawFormatString(20, 204, 0x00ff00, "移動不可\n");
-	}
 #endif // _DEBUG
 }
 
+void Boss::DebugFormatDraw()
+{
+	printf("近い:%d遠い:%dターゲット:%d\n", m_frameCountClose, m_frameCountFar, m_frameCountTarget);
+	printf("移動:%d\n", m_frameCountTAction);
+
+	int colors[8] = { OffColor, OffColor, OffColor, OffColor, OffColor, OffColor, OffColor, OffColor };
+	if (m_close)							{ colors[1] = OnColor; }
+	if (m_far)								{ colors[2] = OnColor; }
+	if (m_target)							{ colors[3] = OnColor; }
+	if (!m_close && !m_far && !m_target)	{ colors[4] = OnColor; }
+	if (m_moveUp)							{ colors[5] = OkColor; }
+	if (m_moveDown)							{ colors[6] = OkColor; }
+	if (!m_moveUp && !m_moveDown)			{ colors[7] = NotColor; }
+
+	DrawFormatString(DrawFormatPos, DrawFormatPos *  5, colors[0], "BOSSの情報	\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos *  6, colors[1], "近距離　　　\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos *  7, colors[2], "遠距離　　　\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos *  8, colors[3], "ターゲット中\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos *  9, colors[4], "範囲外　　　\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos * 10, colors[5], "接近中　　　\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos * 11, colors[6], "後退中　　　\n");
+	DrawFormatString(DrawFormatPos, DrawFormatPos * 12, colors[7], "移動不可　　\n");
+}
+
+// 距離判定(近距離かどうか)
 void Boss::CloseDistance(float closeDist)
 {
 	if ((closeDist) < (m_playerRad + Close))
@@ -177,6 +180,7 @@ void Boss::CloseDistance(float closeDist)
 	}
 }
 
+// 距離判定(遠距離かどうか)
 void Boss::FarDistance(float farDist)
 {
 	if ((farDist) < (m_playerRad + Far))
@@ -214,6 +218,7 @@ void Boss::FarDistance(float farDist)
 	}
 }
 
+// 距離判定(ターゲット距離かどうか)
 void Boss::TargetDistance(float targetDist)
 {
 	if ((targetDist) < (m_playerRad + Target))
@@ -248,6 +253,7 @@ void Boss::TargetDistance(float targetDist)
 	}
 }
 
+// 行動制御
 void Boss::DecideAction()
 {
 	if (m_close)		// 近い範囲にいる場合
@@ -255,19 +261,38 @@ void Boss::DecideAction()
 		// 何秒かに一回処理を変える
 		if (m_frameCountCAction == CActionFrame)
 		{
+			m_frameCountCAction = 0;
 			// n秒経過したらターゲットフラグを外す
 			// ランダムで値を取得するためのもの
-			int randValue = GetRandom(1, 6);
-			if (randValue <= 3)	// 1/2の確率で近づいてくる
+			int randValue = GetRandom(RandMin, RandMax);
+			if (randValue <= RandMax / 4)					// 1/4の確率で近づいてくる
 			{
 				m_moveUp = true;
+				m_moveDown = false;
+				m_meleeAttack = false;
+				return;
 			}
-			else				// 何もしない
+			else if (randValue <= RandMax / 4 * 2)			// 1/4の確率で遠ざかる
 			{
 				m_moveUp = false;
+				m_moveDown = true;
+				m_meleeAttack = false;
+				return;
 			}
-			m_frameCountCAction = 0;
-			return;
+			else if (randValue <= RandMax / 4 * 3)			// 1/4の確率で近距離攻撃する
+			{
+				m_moveUp = false;
+				m_moveDown = false;
+				m_meleeAttack = true;
+				return;
+			}
+			else											// 何もしない
+			{
+				m_moveUp = false;
+				m_moveDown = false;
+				m_meleeAttack = false;
+				return;
+			}
 		}
 		m_frameCountCAction++;
 	}
@@ -278,7 +303,7 @@ void Boss::DecideAction()
 		{
 			// n秒経過したらターゲットフラグを外す
 			// ランダムで値を取得するためのもの
-			int randValue = GetRandom(1, 6);
+			int randValue = GetRandom(RandMin, RandMax);
 			if (randValue <= 3)	// 1/2の確率で近づいてくる
 			{
 				m_moveUp = true;
@@ -299,7 +324,7 @@ void Boss::DecideAction()
 		{
 			// n秒経過したらターゲットフラグを外す
 			// ランダムで値を取得するためのもの
-			int randValue = GetRandom(1, 6);
+			int randValue = GetRandom(RandMin, RandMax);
 			if (randValue <= 3)	// 1/2の確率で近づいてくる
 			{
 				m_moveUp = true;
@@ -319,17 +344,26 @@ void Boss::DecideAction()
 		m_moveDown = false;
 		m_meleeAttack = false;
 		m_rangedAttack = false;
+		m_frameCountTAction = 0;
 	}
 }
 
-void Boss::MoveBoss()
+// 移動
+void Boss::MoveBoss(float MoveDist)
 {
 	if (m_moveUp)
 	{
-		// ボスの移動
-		VECTOR direction = VSub(m_playerPos, m_pos);
-		direction = VNorm(direction); // 正規化
-		m_pos = VAdd(m_pos, VScale(direction, MoveUpSpeed));
+		if ((MoveDist) < (m_playerRad + BossRad))
+		{
+			// プレイヤーとの距離が近すぎる場合は動かない
+		}
+		else
+		{
+			// ボスの移動
+			VECTOR direction = VSub(m_playerPos, m_pos);
+			direction = VNorm(direction); // 正規化
+			m_pos = VAdd(m_pos, VScale(direction, MoveUpSpeed));
+		}
 	}
 	if (m_moveDown)
 	{
@@ -340,6 +374,7 @@ void Boss::MoveBoss()
 	}
 }
 
+// 近接攻撃
 void Boss::MeleeAttack()
 {
 	// 近接攻撃の処理
@@ -357,6 +392,7 @@ void Boss::MeleeAttack()
 	}
 }
 
+// 遠隔攻撃
 void Boss::RangedAttack()
 {
 	// 遠隔攻撃の処理

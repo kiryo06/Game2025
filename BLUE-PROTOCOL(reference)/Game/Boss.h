@@ -5,17 +5,26 @@ class Player;
 class Boss
 {
 private:
+	// モデル
 	int m_model;				// ボスのモデル
+	
+	// フレームカウント
 	int m_frameCountClose;		// 近い場合のフレームをカウントする
 	int m_frameCountFar;		// 遠い場合のフレームをカウントする
 	int m_frameCountTarget;		// ターゲットできる場合のフレームをカウントする
 	int m_frameCountTAction;	// ターゲットしている場合次に行う処理の合計フレームを計測する
 	int m_frameCountFAction;	// 遠い場合次に行う処理の合計フレームを計測する
 	int m_frameCountCAction;	// 近い場合次に行う処理の合計フレームを計測する
+	
+	// 半径
 	float m_rad;				// ボスの半径
 	float m_playerRad;			// プレイヤーの半径
+	
+	// 位置
 	VECTOR m_pos;				// ボスの位置
 	VECTOR m_playerPos;			// プレイヤーの位置を取得するメンバー
+	
+	// 状態フラグ
 	bool m_close;				// 近いかどうかを判断する
 	bool m_far;					// 遠いかどうかを判断する
 	bool m_target;				// ターゲットできるかどうかを判断する
@@ -26,26 +35,35 @@ private:
 public:
 	Boss();
 	~Boss();
-	// モデルの読み込み
+	// モデルの設定
 	void SetModel(int model) { m_model = model; }
 
+	// 初期化
 	void Init();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="m_pPlayer"></param>
 	void Update(Player* m_pPlayer);
+
+	// 描画
 	void Draw();
+
+	// デバッグ文字描画
+	void DebugFormatDraw();
 private:
-	// 近距離
-	void CloseDistance(float closeDist);
-	// 遠距離
-	void FarDistance(float farDist);
-	// ターゲットできる範囲
-	void TargetDistance(float targetDist);
-	// 攻撃をするか移動をするかとどまるかを判断する
-	void DecideAction();
-	// ボスの移動
-	void MoveBoss();
-	// 近接攻撃
-	void MeleeAttack();
-	// 遠隔攻撃
-	void RangedAttack();
+	// 距離の判定
+	void CloseDistance(float closeDist);		// 近距離
+	void FarDistance(float farDist);			// 遠距離
+	void TargetDistance(float targetDist);		// ターゲットできる範囲
+
+	// 行動決定
+	void DecideAction();						// 攻撃をするか移動をするかとどまるかを判断する
+
+	// 移動・攻撃
+	void MoveBoss(float MoveDist);							// ボスの移動
+	void MeleeAttack();							// 近接攻撃
+	void RangedAttack();						// 遠隔攻撃
 };
 

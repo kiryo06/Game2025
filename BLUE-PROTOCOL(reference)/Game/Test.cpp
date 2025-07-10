@@ -74,11 +74,11 @@ void Test::Update()
 
 void Test::Draw()
 {
-	DrawFormatString(10, 20, 0xff0000, "pos1 X:%.3f | Y:%.3f | Z:%.3f", m_posD1.x, m_posD1.y, m_posD1.z);
-	DrawFormatString(10, 36, 0xff0000, "pos2 X:%.3f | Y:%.3f | Z:%.3f", m_posD2.x, m_posD2.y, m_posD2.z);
-	DrawFormatString(10, 52, 0xff0000, "pos3 X:%.3f | Y:%.3f | Z:%.3f", m_posD3.x, m_posD3.y, m_posD3.z);
-	DrawFormatString(10, 68, 0xff0000, "pos4 X:%.3f | Y:%.3f | Z:%.3f", m_posD4.x, m_posD4.y, m_posD4.z);
-	DrawFormatString(10, 84, 0xff0000, "Move X:%.3f | Move Z:%.3f", m_MoveX, m_MoveZ);
+//	DrawFormatString(10, 20, 0xff0000, "pos1 X:%.3f | Y:%.3f | Z:%.3f", m_posD1.x, m_posD1.y, m_posD1.z);
+//	DrawFormatString(10, 36, 0xff0000, "pos2 X:%.3f | Y:%.3f | Z:%.3f", m_posD2.x, m_posD2.y, m_posD2.z);
+//	DrawFormatString(10, 52, 0xff0000, "pos3 X:%.3f | Y:%.3f | Z:%.3f", m_posD3.x, m_posD3.y, m_posD3.z);
+//	DrawFormatString(10, 68, 0xff0000, "pos4 X:%.3f | Y:%.3f | Z:%.3f", m_posD4.x, m_posD4.y, m_posD4.z);
+//	DrawFormatString(10, 84, 0xff0000, "Move X:%.3f | Move Z:%.3f", m_MoveX, m_MoveZ);
 
 	// ƒJƒvƒZƒ‹1
 	DrawCapsule3DD(m_posD1, m_posD2, kColRadius1, 16, 0xff00ff, 0xffffff, false);
