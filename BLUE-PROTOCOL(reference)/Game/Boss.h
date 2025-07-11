@@ -15,10 +15,14 @@ private:
 	int m_frameCountTAction;	// ターゲットしている場合次に行う処理の合計フレームを計測する
 	int m_frameCountFAction;	// 遠い場合次に行う処理の合計フレームを計測する
 	int m_frameCountCAction;	// 近い場合次に行う処理の合計フレームを計測する
+	int m_frameCountAttack;		// 攻撃しているときの現在のフレーム時間を格納するためのもの
 	
 	// 半径
 	float m_rad;				// ボスの半径
 	float m_playerRad;			// プレイヤーの半径
+
+	// 速度
+	float m_targetMoveSpeed;	// ターゲット中の移動速度を変える
 	
 	// 位置
 	VECTOR m_pos;				// ボスの位置
@@ -32,6 +36,7 @@ private:
 	bool m_moveDown;			// 戻る移動をするかどうかを判断する
 	bool m_meleeAttack;			// 近接攻撃をするかどうかを判断する
 	bool m_rangedAttack;		// 遠隔攻撃をするかどうかを判断する
+	bool m_attack;				// 攻撃中かどうかを判断する
 public:
 	Boss();
 	~Boss();
@@ -45,7 +50,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="m_pPlayer"></param>
-	void Update(Player* m_pPlayer);
+	void Update(Player* player);
 
 	// 描画
 	void Draw();
