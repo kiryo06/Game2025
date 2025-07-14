@@ -52,6 +52,7 @@ Boss::Boss():
 	m_frameCountAttack(0),
 	m_rad(0.0f),
 	m_playerRad(0.0f),
+	m_currentRotY(0.0f),
 	m_targetMoveSpeed(0.0f),
 	m_pos(0.0f, 0.0f, 0.0f),
 	m_playerPos(0.0f, 0.0f, 0.0f),
@@ -93,32 +94,17 @@ void Boss::Update(Player* player)
 	// 距離に合わせて何をするかを判断する
 	DecideAction();
 	// ボスの移動
-	MoveBoss(dist);
+	Move(dist);
 
 	// ボスの攻撃
 	MeleeAttack();
 	RangedAttack();
 
-	// ボスの向いている向きを変える
-	VECTOR das;
-	das = player->GetPos();
-	das = VSub(das, m_pos);
-	float m_rotY = 0;
-	// 最後に入力された値を変更しないめに入力がないときは処理を行わない
-	if (VSize(das) != 0)
-	{
-		// 正規化
-		das = VNorm(das);
-		// アークタンジェント
-		m_rotY = atan2(das.z, das.x);
-		m_rotY -= DX_PI_F / 2 * 3;	// 90度ずれていた分の補正
-		m_rotY *= -1.0f;
-	}
-
 	// ボスの位置
 	MV1SetPosition(m_model, m_pos);
+
 	// ボスの向いている向き
-	MV1SetRotationXYZ(m_model, VGet(0, m_rotY,0));
+	RotationXYZ();
 }
 
 void Boss::Draw()
@@ -151,19 +137,9 @@ void Boss::DebugFormatDraw()
 	DrawFormatString(kDrawFormatPos * 8, kDrawFormatPos * 10, 0xffffff, "Bossの接近速度:%.2f", moveSpeed);
 	DrawFormatString(kDrawFormatPos * 8, kDrawFormatPos * 11, 0xffffff, "Bossの後退速度: %.2f", kMoveDownSpeed);
 	// 表示する情報の色を初期化
-	int colors[kDebugDisplayNum] =
-	{
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor,
-		kOffColor
-	};
+	int colors[kDebugDisplayNum] = {};
+	for (int i = 0; i < kDebugDisplayNum; ++i) colors[i] = kOffColor;
+
 	// 状況に応じて色を変える
 	if (m_close)															{	colors[1] = kOnColor;	}
 	if (m_far)																{	colors[2] = kOnColor;	}
@@ -516,7 +492,7 @@ void Boss::DecideAction()
 }
 
 // 移動
-void Boss::MoveBoss(float MoveDist)
+void Boss::Move(float MoveDist)
 {
 	if (m_moveUp && m_moveDown)return;
 
@@ -592,6 +568,46 @@ void Boss::RangedAttack()
 			// 攻撃の処理
 		}
 	}
+}
+
+void Boss::RotationXYZ()
+{
+	// ボスの向いている向きを変える
+	VECTOR das = VSub(m_playerPos, m_pos);
+	// 目標のY回転角(ラジアン)
+	float targetRotY = 0;
+	// 最後に入力された値を変更しないめに入力がないときは処理を行わない
+	if (VSize(das) != 0)
+	{
+		// 正規化
+		das = VNorm(das);
+		// アークタンジェント
+		targetRotY = atan2(das.z, das.x);
+
+		// モデルの初期向きの補正(モデルによって調整が必要)
+		targetRotY -= DX_PI_F / 2 * 3;	// 90度ずれていた分の補正
+		targetRotY *= -1.0f;
+	}
+
+	// Lerpの補間係数（0.0～1.0、小さいほどゆっくり回転）
+	float t = 0.1f;
+
+	// 角度補正(補正するには「角度の差」を調整)
+	float angleDiff = targetRotY - m_currentRotY;
+
+	// 角度を -π ～ π の範囲に補正
+	while (angleDiff > DX_PI_F)		{ angleDiff -= DX_PI_F * 2; }
+	while (angleDiff < -DX_PI_F)	{ angleDiff += DX_PI_F * 2; }
+
+	// 角度制限を超えていたら制限値にクリップ
+	if (angleDiff > DX_PI_F / 3.0f)       angleDiff = DX_PI_F / 3.0f;
+	else if (angleDiff < -DX_PI_F / 3.0f) angleDiff = -DX_PI_F / 3.0f;
+
+	// スムーズに回転させる
+	m_currentRotY += angleDiff * t;
+
+	// 回転を設定
+	MV1SetRotationXYZ(m_model, VGet(0, m_currentRotY, 0));
 }
 
 //|**日付**| 作業内容														| 目的								|		// 状況

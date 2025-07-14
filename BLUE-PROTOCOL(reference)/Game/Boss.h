@@ -21,6 +21,9 @@ private:
 	float m_rad;				// ボスの半径
 	float m_playerRad;			// プレイヤーの半径
 
+	// 向きを保存するためのもの
+	float m_currentRotY;
+
 	// 速度
 	float m_targetMoveSpeed;	// ターゲット中の移動速度を変える
 	
@@ -67,8 +70,11 @@ private:
 	void DecideAction();						// 攻撃をするか移動をするかとどまるかを判断する
 
 	// 移動・攻撃
-	void MoveBoss(float MoveDist);							// ボスの移動
+	void Move(float MoveDist);					// ボスの移動
 	void MeleeAttack();							// 近接攻撃
 	void RangedAttack();						// 遠隔攻撃
+
+	// 向いている向き
+	void RotationXYZ();							// 向いている向きを変更
 };
 
