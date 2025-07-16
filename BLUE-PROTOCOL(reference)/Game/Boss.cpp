@@ -12,8 +12,8 @@ namespace
 	constexpr	const	int		kTActionFrame			= 60 * 2;					// 近距離の行動変更のフレーム数
 	constexpr	const	int		kFActionFrame			= 60 * 2;					// 遠距離の行動変更フレーム数
 	constexpr	const	int		kCActionFrame			= 60 * 2;					// ターゲットの行動変更フレーム数
-	constexpr	const	int		kmeleeAttack			= 60 * 6;					// 近接攻撃時にほかの処理を止める時間
-	constexpr	const	int		krangedAttack			= 60 * 7;					// 遠隔攻撃時にほかの処理を止めるための時間
+	constexpr	const	int		kmeleeAttack			= 60 * 1;					// 近接攻撃時にほかの処理を止める時間
+	constexpr	const	int		krangedAttack			= 60 * 1;					// 遠隔攻撃時にほかの処理を止めるための時間
 	constexpr	const	int		kOnColor				= 0x33ffcc;					// ONになった時の色
 	constexpr	const	int		kOffColor				= 0xd3d3d3;					// OFFになった時の色
 	constexpr	const	int		kOkColor				= 0x33ff66;					// OKになった時の色
@@ -26,6 +26,7 @@ namespace
 	constexpr	const	float	kMoveDownSpeed			= {     5.0f };				// 離れる速度
 	constexpr	const	float	kMaxSpeedIncrease		= {    15.0f };				// 最大速度を増やす量の最大値
 	constexpr	const	VECTOR	kBossPos				= { 0.0f, 0.0f, -1000.0f };	// ボスの初期位置
+	constexpr	const	VECTOR	kBossScale				= { 3.0f,3.0f, 3.0f };		// ボスのスケール
 }
 
 int GetRandom(int min, int max)
@@ -52,6 +53,7 @@ Boss::Boss():
 	m_frameCountAttack(0),
 	m_rad(0.0f),
 	m_playerRad(0.0f),
+	m_hp(0.0f),
 	m_currentRotY(0.0f),
 	m_targetMoveSpeed(0.0f),
 	m_pos(0.0f, 0.0f, 0.0f),
@@ -102,7 +104,8 @@ void Boss::Update(Player* player)
 
 	// ボスの位置
 	MV1SetPosition(m_model, m_pos);
-
+	// ボスのスケールを変更
+	MV1SetScale(m_model, kBossScale);
 	// ボスの向いている向き
 	RotationXYZ();
 }
@@ -308,10 +311,9 @@ void Boss::DecideAction()
 		m_frameCountFAction = kFActionFrame;
 		m_frameCountTAction = kTActionFrame;
 		m_targetMoveSpeed = 0.0f;
-		// 攻撃中は処理を止める
+		// 攻撃中は早期returnで処理を止める
 		if (m_attack)
 		{
-			m_frameCountCAction == kCActionFrame;
 			return;
 		}
 		else
@@ -373,9 +375,9 @@ void Boss::DecideAction()
 		m_frameCountCAction = kCActionFrame;
 		m_frameCountTAction = kTActionFrame;
 		m_targetMoveSpeed = 0.0f;
+		// 攻撃中は早期returnで処理を止める
 		if (m_attack)
 		{
-			m_frameCountFAction = kFActionFrame;
 			return;
 		}
 		else
@@ -541,6 +543,8 @@ void Boss::MeleeAttack()
 		if (m_attack)
 		{
 			// 攻撃の処理
+			//VECTOR end = MV1GetPosition(m_model);
+
 		}
 	}
 }

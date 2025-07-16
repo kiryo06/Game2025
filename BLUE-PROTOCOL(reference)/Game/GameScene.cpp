@@ -24,7 +24,7 @@ void GameScene::Init()
 	pDrawFunc = &GameScene::FadeDraw; // 初期はフェード描画
 	
 	m_playerHandle = MV1LoadModel("data/model/player.mv1");
-	m_bossHandle = MV1LoadModel("data/model/bose.mv1");
+	m_bossHandle = MV1LoadModel("data/model/Boss/boss.mv1");
 //	m_fieldHandle = MV1LoadModel("data/model/field.mv1");
 	
 	// カメラの初期化

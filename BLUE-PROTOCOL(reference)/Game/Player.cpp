@@ -157,6 +157,9 @@ void Player::Move()
 	MV1SetPosition(m_model, m_pos);
 	// ƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚éŒü‚«
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
+
+	// UŒ‚
+	
 }
 
 bool Player::isJumping() const

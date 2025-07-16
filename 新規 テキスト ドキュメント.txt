@@ -1,0 +1,112 @@
+攻撃処理を `Boss` や `Player` にあまり持たせたくない場合、
+「攻撃の責務を外部クラスに委譲する」設計が有効です。
+以下のようなアプローチを提案します。
+
+---
+
+## ✅ 解決の方向性：**攻撃処理を専用クラスへ切り出す**
+
+### 1. 攻撃を管理するクラスを作成
+
+例えば以下のようなクラスを新たに作成します。
+
+```cpp
+// AttackProcessor.h
+class Player;
+class Boss;
+
+enum class AttackType
+{
+	Melee,
+	Ranged
+};
+
+class AttackProcessor
+{
+public:
+	void ProcessBossAttack(Boss* boss, Player* player, AttackType type);
+	void ProcessPlayerAttack(Player* player, Boss* boss, AttackType type);
+};
+```
+
+```cpp
+// AttackProcessor.cpp
+#include "AttackProcessor.h"
+#include "Boss.h"
+#include "Player.h"
+
+void AttackProcessor::ProcessBossAttack(Boss* boss, Player* player, AttackType type)
+{
+	switch (type)
+	{
+	case AttackType::Melee:
+		// 判定やダメージの適用処理など
+		if (/*ヒット条件*/) {
+			player->TakeDamage(/*amount*/);
+		}
+		break;
+
+	case AttackType::Ranged:
+		// 遠距離攻撃用の処理（弾生成、演出など）
+		break;
+	}
+}
+
+void AttackProcessor::ProcessPlayerAttack(Player* player, Boss* boss, AttackType type)
+{
+	// プレイヤーからの攻撃処理も同様に
+}
+```
+
+---
+
+### 2. `Boss` クラスから攻撃呼び出しを委譲
+
+`Boss::MeleeAttack()` や `Boss::RangedAttack()` は以下のように簡素にできます：
+
+```cpp
+void Boss::MeleeAttack()
+{
+	if (m_meleeAttack)
+	{
+		m_attack = true;
+		m_frameCountAttack++;
+
+		if (m_frameCountAttack == kmeleeAttack)
+		{
+			m_meleeAttack = false;
+			m_attack = false;
+			m_frameCountAttack = 0;
+			return;
+		}
+
+		if (m_attack && m_attackProcessor)
+		{
+			m_attackProcessor->ProcessBossAttack(this, m_targetPlayer, AttackType::Melee);
+		}
+	}
+}
+```
+
+※ このとき `Boss` に `AttackProcessor* m_attackProcessor` と `Player* m_targetPlayer` を保持する設計が必要。
+
+---
+
+## ✨ このような設計のメリット
+
+* **単一責任の原則に従う**：攻撃のロジックが `Boss` や `Player` の内部から分離され、管理しやすくなる。
+* **テストしやすくなる**：攻撃処理を個別にテスト可能。
+* **将来的な拡張に強い**：状態異常、ヒットエフェクト、ヒットストップなどもここに集約できる。
+
+---
+
+## ✅ 次のステップ
+
+* `AttackProcessor` クラスを作成する。
+* `Boss` / `Player` にアタック処理用のインターフェースを追加。
+* 攻撃系処理をすべて `AttackProcessor` に移動。
+* 弾・エフェクト生成処理がある場合は、さらに別クラス（例：`ProjectileManager`, `EffectManager`）に切り出しても良いです。
+
+---
+
+ご希望であれば、`AttackProcessor` の具体的なコードや、`Boss` クラスへの組み込み例をさらに詳細にご提案できます。

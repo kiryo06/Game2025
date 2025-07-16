@@ -21,6 +21,9 @@ private:
 	float m_rad;				// ボスの半径
 	float m_playerRad;			// プレイヤーの半径
 
+	// 
+	float m_hp;					// HP
+
 	// 向きを保存するためのもの
 	float m_currentRotY;
 
@@ -30,7 +33,8 @@ private:
 	// 位置
 	VECTOR m_pos;				// ボスの位置
 	VECTOR m_playerPos;			// プレイヤーの位置を取得するメンバー
-	
+	VECTOR m_attackPos;			// 攻撃する位置を入れるためのもの
+
 	// 状態フラグ
 	bool m_close;				// 近いかどうかを判断する
 	bool m_far;					// 遠いかどうかを判断する

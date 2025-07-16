@@ -11,8 +11,9 @@ private:
 	VECTOR m_pos;				// プレイヤーの位置
 	VECTOR m_vec;				// プレイヤーのベクトル
 	float m_rotY;
-	int m_hp;
 	float m_getCameraAtan2;		// カメラの回転量をもとにプレイヤーの向きや移動を変更
+	float m_hp;
+	float m_attack;
 public:
 	Player();
 	~Player();
@@ -28,7 +29,6 @@ public:
 //	VECTOR GetRot()const { return m_modelRot; }
 	VECTOR GetColPos() const;
 	float GetColRadius() const;
-	int GetHp() const { return m_hp; }
 private:
 	void Move();
 	bool isJumping() const;
