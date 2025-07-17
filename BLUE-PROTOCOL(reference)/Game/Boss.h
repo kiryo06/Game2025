@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
 
+class AttackProcessor;
 class Player;
 class Boss
 {
@@ -73,6 +74,12 @@ private:
 	// 行動決定
 	void DecideAction();						// 攻撃をするか移動をするかとどまるかを判断する
 
+	// 攻撃に関する物
+	void SetAttackProcessor(AttackProcessor* processor);
+
+	// 攻撃するターゲット
+	void SetTargetPlayer(Player* player);
+
 	// 移動・攻撃
 	void Move(float MoveDist);					// ボスの移動
 	void MeleeAttack();							// 近接攻撃
@@ -80,5 +87,8 @@ private:
 
 	// 向いている向き
 	void RotationXYZ();							// 向いている向きを変更
+
+	AttackProcessor* m_attackProcessor = nullptr;
+	Player* m_targetPlayer = nullptr;
 };
 

@@ -2,6 +2,7 @@
 #include "Pad.h"
 #include "Input.h"
 #include "Camera.h"
+#include "AttackProcessor.h"
 
 namespace
 {
@@ -11,7 +12,7 @@ namespace
 	constexpr float kMoveAccel = 1.0f;		// プレイヤーの移動加速度
 	constexpr float kMoveDecRate = 0.80f;	// プレイヤーの移動減速率
 
-	constexpr int kDefaultHp = 120;			// プレイヤーの初期HP
+	constexpr const float kDefaultHp = 120.0f;			// プレイヤーの初期HP
 
 	constexpr float kColRadius = 100.0f;		// プレイヤーの当たり判定
 
@@ -22,7 +23,7 @@ Player::Player() :
 	m_pos(0.0f, 20.2f, 0.0f),
 	m_vec(0.0f, 0.0f, 0.0f),
 	m_rotY(0.0f),
-	m_hp(kDefaultHp),
+	m_hp(0.0f),
 	m_getCameraAtan2(0.0f)
 {
 }
@@ -33,6 +34,7 @@ Player::~Player()
 
 void Player::Init()
 {
+	m_hp = kDefaultHp;
 }
 
 void Player::Update(Input& input, Camera *camera)
@@ -61,6 +63,7 @@ void Player::Update(Input& input, Camera *camera)
 	// プレイヤーの移動
 	Move();
 
+
 #ifdef _DEBUG
 	// プレイヤーのを初期位置に戻す
 	if (input.IsTrigger("左スティック押しこみ"))
@@ -68,7 +71,6 @@ void Player::Update(Input& input, Camera *camera)
 		m_pos = VGet(0.0f, 0.0f, 0.0f);
 	}
 #endif // _DEBUG
-
 }
 
 void Player::Draw()
@@ -80,8 +82,8 @@ void Player::Draw()
 #ifdef _DEBUG
 	
 //	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
-//eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee                                                                    fa	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
-
+//	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
+	DrawFormatString(10, 0, 0xff0000, "%f", m_hp);
 	// 当たり判定のデバック表示
 	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
 	DrawSphere3D(VGet(0, 80, 0), 16, 16, 0x00ff00, 0x00ff00, false);
@@ -158,11 +160,20 @@ void Player::Move()
 	// プレイヤーの向いている向き
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
 
-	// 攻撃
-	
 }
 
 bool Player::isJumping() const
 {
 	return (m_pos.y > 0.0f);
+}
+
+void Player::TakeDamage(float damage)
+{
+	m_hp -= damage;
+
+	if (m_hp <= 0)
+	{
+		m_hp = 0;
+		DrawFormatString(0, 0, 0xffffff, "死亡");
+	}
 }

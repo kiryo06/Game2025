@@ -1,5 +1,6 @@
 #include "Boss.h"
 #include "Player.h"
+#include "AttackProcessor.h"
 namespace
 {
 	constexpr	const	int		kDrawFormatPos			= 16;						// ‰ŠúˆÊ’u‚ðÝ’è
@@ -493,6 +494,16 @@ void Boss::DecideAction()
 	}
 }
 
+void Boss::SetAttackProcessor(AttackProcessor* processor)
+{
+	m_attackProcessor = processor;
+}
+
+void Boss::SetTargetPlayer(Player* player)
+{
+	m_targetPlayer = player;
+}
+
 // ˆÚ“®
 void Boss::Move(float MoveDist)
 {
@@ -544,7 +555,7 @@ void Boss::MeleeAttack()
 		{
 			// UŒ‚‚Ìˆ—
 			//VECTOR end = MV1GetPosition(m_model);
-
+			m_attackProcessor->ProcessBossAttack(this, m_targetPlayer, Melee);
 		}
 	}
 }
@@ -567,9 +578,10 @@ void Boss::RangedAttack()
 			m_frameCountAttack = 0;
 			return;
 		}
-		if (m_attack)
+		if (m_attack && m_attackProcessor)
 		{
 			// UŒ‚‚Ìˆ—
+			m_attackProcessor->ProcessBossAttack(this, m_targetPlayer, Ranged);
 		}
 	}
 }
