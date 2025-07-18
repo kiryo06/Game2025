@@ -9,7 +9,7 @@ namespace
 
 void AttackProcessor::ProcessPlayerAttack(Player* player, Boss* boss, PlayerAttackType type)
 {
-	/*switch (type)
+	switch (type)
 	{
 	case Attack:
 		break;
@@ -25,7 +25,7 @@ void AttackProcessor::ProcessPlayerAttack(Player* player, Boss* boss, PlayerAtta
 		break;
 	case Skill_6:
 		break;
-	}*/
+	}
 }
 
 void AttackProcessor::ProcessBossAttack(Boss* boss, Player* player, BossAttackType type)
@@ -37,7 +37,6 @@ void AttackProcessor::ProcessBossAttack(Boss* boss, Player* player, BossAttackTy
 		{
 
 			// ‹ßÚUŒ‚‚Ì“à—e
-			player->TakeDamage(BossMeleeDamage);
 		}
 		break;
 	case BossAttackType::Ranged:

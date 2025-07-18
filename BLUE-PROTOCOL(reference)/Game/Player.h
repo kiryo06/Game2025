@@ -29,7 +29,6 @@ public:
 	//	VECTOR GetRot()const { return m_modelRot; }
 	VECTOR GetColPos() const;
 	float GetColRadius() const;
-	void TakeDamage(float damage);
 private:
 	void Move();
 	bool isJumping() const;

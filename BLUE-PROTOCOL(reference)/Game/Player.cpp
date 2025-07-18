@@ -108,14 +108,14 @@ void Player::Move()
 	// 現在向いている向き
 	VECTOR dir = VGet(0, 0, 0);
 
-	// 前または後ろならば、
-	if (Pad::GetLeftStick().y < -1.0f || Pad::GetLeftStick().y > 1.0f)
+	// 前後移動処理		「fabs」は絶対値
+	if (fabs(Pad::GetLeftStick().y) > 1.0f)
 	{
 		dir.z = Pad::GetLeftStick().y;
 	}
 
-	// 左または右ならば、
-	if (Pad::GetLeftStick().x < -1.0f || Pad::GetLeftStick().x > 1.0f)
+	// 左右移動処理		「fabs」は絶対値
+	if (fabs(Pad::GetLeftStick().x) > 1.0f)
 	{
 		dir.x = -Pad::GetLeftStick().x;
 	}
@@ -165,15 +165,4 @@ void Player::Move()
 bool Player::isJumping() const
 {
 	return (m_pos.y > 0.0f);
-}
-
-void Player::TakeDamage(float damage)
-{
-	m_hp -= damage;
-
-	if (m_hp <= 0)
-	{
-		m_hp = 0;
-		DrawFormatString(0, 0, 0xffffff, "死亡");
-	}
 }

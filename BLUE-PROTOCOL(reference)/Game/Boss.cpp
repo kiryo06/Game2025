@@ -170,21 +170,11 @@ void Boss::DebugFormatDraw()
 		"行動不可　　\n"
 	};
 
-	// 
+	// 表示する情報の量を
 	for (int i = 0; i < kDebugDisplayNum; ++i)
 	{
 		DrawFormatString(kDrawFormatPos, kDrawFormatPos * (5 + i), colors[i], labels[i]);
 	}
-#if 0
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos *  5, colors[0], "BOSSの情報	\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos *  6, colors[1], "近距離　　　\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos *  7, colors[2], "遠距離　　　\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos *  8, colors[3], "ターゲット中\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos *  9, colors[4], "範囲外　　　\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos * 10, colors[5], "接近中　　　\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos * 11, colors[6], "後退中　　　\n");
-	DrawFormatString(kDrawFormatPos, kDrawFormatPos * 12, colors[7], "移動不可　　\n");
-#endif // 0
 }
 
 // 距離判定(近距離かどうか)
