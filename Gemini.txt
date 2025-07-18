@@ -1,0 +1,138 @@
+✦ deltaTime、つまりフレーム間の経過時間を取得して利用するには、いくつかの手順が必要です。これは通常、ゲームのメインループで計算され、各オブジェクトの更新処理（Update関数）に引数として渡されます。
+
+  Player.cpp だけで完結するのではなく、ゲーム全体の更新処理の流れを少し変更する必要があります。以下にその手順を説明します。
+
+  deltaTime を取得・利用する手順
+
+  ステップ1: メインループで deltaTime を計算する
+
+  まず、ゲームのメインループ（おそらく Application::Run() の中）で、毎フレームの開始時に経過時間を計算します。DxLibには高精度な時間を取得する GetNowHiPerformanceCount() という関数があります。これを利用します。
+
+  Application.cpp の Run() メソッド内に、以下のような処理を追加する必要があります。
+
+    1 // Application.cpp の Run() メソッド内
+    2
+    3 // 前フレームの時間を保持する変数 (ループの外で宣言)
+    4 long long lastTime = 0;
+    5
+    6 // ゲームループ
+    7 while (true) {
+    8     // 現在の時間をマイクロ秒単位で取得
+    9     long long currentTime = GetNowHiPerformanceCount();
+   10
+   11     // lastTimeが初回(0)でなければ、経過時間を計算
+   12     float deltaTime = 0.0f;
+   13     if (lastTime != 0) {
+   14         // (現在の時間 - 前フレームの時間) / 1,000,000.0f で秒単位に変換
+   15         deltaTime = (currentTime - lastTime) / 1000000.0f;
+   16     }
+   17     // 現在の時間を次のフレームのために保存
+   18     lastTime = currentTime;
+   19
+   20     // ... (既存の更新処理) ...
+   21     // この計算した deltaTime を各Update関数に渡していく
+   22     sceneController_->Update(input_, deltaTime);
+   23
+   24     // ... (描画処理など) ...
+   25 }
+
+  ステップ2: Update 関数の引数に deltaTime を追加する
+
+  計算した deltaTime を Player::Update まで届けるために、経由するすべての Update 関数の引数を変更します。
+
+   1. `BaseScene.h` (すべてのシーンの基底クラス)
+
+   1     // 変更前
+   2     virtual void Update(Input& input) = 0;
+   3     // 変更後
+   4     virtual void Update(Input& input, float deltaTime) = 0;
+
+   2. `SceneController.h` / `SceneController.cpp`
+
+   1     // 変更前
+   2     void Update(Input& input);
+   3     // 変更後
+   4     void Update(Input& input, float deltaTime);
+
+   3. `GameScene.h` / `GameScene.cpp`
+
+   1     // 変更前
+   2     void Update(Input& input) override;
+   3     // 変更後
+   4     void Update(Input& input, float deltaTime) override;
+
+   4. `Player.h` / `Player.cpp`
+
+   1     // 変更前
+   2     void Update(Input& input, Camera* camera);
+   3     // 変更後
+   4     void Update(Input& input, Camera* camera, float deltaTime);
+
+  ステップ3: Update 関数の呼び出し箇所を修正する
+
+  引数を変更したため、次に関数を呼び出している箇所も修正します。
+
+   1. `Application.cpp` の `Run()`
+
+   1     // 変更前
+   2     sceneController_->Update(input_);
+   3     // 変更後
+   4     sceneController_->Update(input_, deltaTime);
+
+   2. `SceneController.cpp` の `Update()`
+
+   1     // 変更前
+   2     _scenes.front()->Update(input);
+   3     // 変更後
+   4     _scenes.front()->Update(input, deltaTime);
+
+   3. `GameScene.cpp` の `Update()`
+
+   1     // 変更前
+   2     m_pPlayer->Update(input, m_pCamera.get());
+   3     // 変更後
+   4     m_pPlayer->Update(input, m_pCamera.get(), deltaTime);
+
+  ステップ4: Player.cpp で deltaTime を利用する
+
+  これで Player::Update 関数内で deltaTime が使えるようになります。
+  例えば、移動処理をフレームレートに依存しないようにするには、以下のようにします。
+
+    1 // Player.cpp の Movement メソッドなど
+    2
+    3 // 速度 (例: 1秒間に5ユニット進む)
+    4 float speed = 5.0f;
+    5
+    6 // 変更前 (フレームレートに依存)
+    7 // m_pos.x += 0.1f;
+    8
+    9 // 変更後 (フレームレート非依存)
+   10 m_pos.x += speed * deltaTime;
+  重力計算なども同様です。
+
+   1 // Player.cpp の Gravity メソッド
+   2
+   3 // 変更前
+   4 // m_vec.y -= 0.5f;
+   5
+   6 // 変更後 (gravityAcceleration は重力加速度)
+   7 float gravityAcceleration = 9.8f;
+   8 m_vec.y -= gravityAcceleration * deltaTime;
+
+  まとめ
+
+  deltaTime は、Player.cpp だけで取得するものではなく、ゲームのメインループで計算し、各オブジェクトの `Update` 関数へ引数として伝播させていくのが一般的な方法です。
+
+  以上の手順で deltaTime を利用できます。もしよろしければ、私がこれらの変更をコードに適用しましょうか？
+
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ You are running Gemini CLI in your home directory. It is recommended to run in a project-specific directory.                                                                                                      │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ >   Type your message or @path/to/file                                                                                                                                                                            │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+~                                                                              no sandbox (see /docs)                                                                               gemini-2.5-pro (97% context left)

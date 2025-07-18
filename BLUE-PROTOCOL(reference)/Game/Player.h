@@ -1,6 +1,15 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 #include <memory>
+
+// プレイヤーのジャンプ中の処理をStateパターンにした
+enum class JumpState
+{
+	Idle,			// 待機状態
+	Junmping,		// ジャンプ状態
+	Falling			// 落下状態
+};
+
 
 class AttackProcessor;
 class Input;
@@ -8,13 +17,26 @@ class Camera;
 class Player
 {
 private:
-	int m_model;				// �v���C���[�̃��f��
-	VECTOR m_pos;				// �v���C���[�̈ʒu
-	VECTOR m_vec;				// �v���C���[�̃x�N�g��
+	// モデル
+	int m_model;				// プレイヤーのモデル
+
+	// 向きを保存するためのもの
 	float m_rotY;
-	float m_getCameraAtan2;		// �J�����̉�]�ʂ����ƂɃv���C���[�̌�����ړ���ύX
-	float m_hp;
-	float m_attack;
+
+	float m_getCameraAtan2;		// カメラの回転量をもとにプレイヤーの向きや移動を変更
+	
+	// キャラクターの情報
+	float m_hp;					// プレイヤーのHP
+	float m_attack;				// プレイヤーの攻撃力
+	
+	// 位置
+	VECTOR m_pos;				// プレイヤーの位置
+	
+	// ベクトル
+	VECTOR m_vec;				// プレイヤーのベクトル
+	
+	// Stateのパターン
+	JumpState m_state;
 public:
 	Player();
 	~Player();
@@ -26,12 +48,14 @@ public:
 	void Draw();
 	VECTOR GetPos()const { return m_pos; }
 	VECTOR GetVec()const { return m_vec; }
-	//	VECTOR GetRot()const { return m_modelRot; }
-	VECTOR GetColPos() const;
-	float GetColRadius() const;
+	VECTOR GetColPos()const;
+	float GetColRadius()const;
 private:
-	void Move();
-	bool isJumping() const;
+	void HandleInput(Input& input);
+	void Jump();
+	void Gravity(float deltaTime);
+	void Movement(float deltaTime);
+	void UpdateTransform();
 	AttackProcessor* m_attackProcessor = nullptr;
 	Player* m_targetPlayer = nullptr;
 };

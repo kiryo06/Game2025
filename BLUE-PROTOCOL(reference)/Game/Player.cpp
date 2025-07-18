@@ -1,4 +1,4 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include "Pad.h"
 #include "Input.h"
 #include "Camera.h"
@@ -6,25 +6,33 @@
 
 namespace
 {
-	constexpr float kJumpPower = 16.0f;		// ƒvƒŒƒCƒ„[‚ÌƒWƒƒƒ“ƒv—Í
-	constexpr float kGravity = -0.5f;		// ƒvƒŒƒCƒ„[‚Ìd—Í
+	// ç‰©ç†ç§»å‹•é–¢é€£
+	constexpr	const	float	kJumpPower				=	16.0f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+	constexpr	const	float	kGravity				=	-0.5f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é‡åŠ›
+	constexpr	const	float	kMoveAccel				=	1.0f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•åŠ é€Ÿåº¦
+	constexpr	const	float	kMoveDecRate			=	0.80f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ¸›é€Ÿç‡
 
-	constexpr float kMoveAccel = 1.0f;		// ƒvƒŒƒCƒ„[‚ÌˆÚ“®‰Á‘¬“x
-	constexpr float kMoveDecRate = 0.80f;	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®Œ¸‘¬—¦
+	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã«ã¤ã„ã¦ã®è¨­å®š
+	constexpr	const	float	kDeadZone				=	0.1f;			// ãƒ‡ãƒƒãƒˆã‚¾ãƒ¼ãƒ³ã‚’æ±ºã‚ã‚‹
 
-	constexpr const float kDefaultHp = 120.0f;			// ƒvƒŒƒCƒ„[‚Ì‰ŠúHP
-
-	constexpr float kColRadius = 100.0f;		// ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
-
+	// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+	constexpr	const	float	kDefaultHp				=	100.0f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸHP
+	// å½“ãŸã‚Šåˆ¤å®šé–¢é€£
+	constexpr	const	float	kCollisionRadius		=	100.0f;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®šã®åŠå¾„
+	constexpr	const	float	kCollisionHeightOffset	=	80.0f;			// å½“ãŸã‚Šåˆ¤å®šã®ä¸­å¿ƒYåº§æ¨™
+	// åœ°é¢ã®é«˜ã•(ä»®)
+	constexpr	const	float	kGroundHeight			=	0.0f;
 }
 
 Player::Player() :
 	m_model(-1),
-	m_pos(0.0f, 20.2f, 0.0f),
-	m_vec(0.0f, 0.0f, 0.0f),
 	m_rotY(0.0f),
+	m_getCameraAtan2(0.0f),
 	m_hp(0.0f),
-	m_getCameraAtan2(0.0f)
+	m_attack(0.0f),
+	m_pos(0.0f, 0.0f, 0.0f),
+	m_vec(0.0f, 0.0f, 0.0f),
+	m_state(JumpState::Idle)
 {
 }
 
@@ -39,34 +47,47 @@ void Player::Init()
 
 void Player::Update(Input& input, Camera *camera)
 {
+	// ã‚«ãƒ¡ãƒ©ã®å‘ãã‚’å–å¾—
 	m_getCameraAtan2 = camera->GetAtan2();
-	m_vec.x *= kMoveDecRate;
-	m_vec.z *= kMoveDecRate;
-
-	if (isJumping())
+	HandleInput(input);
+	switch (m_state)
 	{
-		m_vec.y += kGravity;
-	}
-	else
-	{
-		m_vec.y = 0.0f;
-		m_pos.y = 0.0f;
-	}
-	// ƒWƒƒƒ“ƒvˆ—
-	if (!isJumping())
-	{
-		if (input.IsTrigger("Aƒ{ƒ^ƒ“"))
+	case JumpState::Idle:
+		// å…¥åŠ›ãŒå…¥ã£ãŸã‚‰ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†ã«ç§»è¡Œ
+		if (input.IsTrigger("Aãƒœã‚¿ãƒ³"))
 		{
-			m_vec.y = kJumpPower;
+			Jump();
 		}
+		break;
+	case JumpState::Junmping:
+		// é ‚ç‚¹ã«åˆ°é”ã—ãŸã‚‰è½ä¸‹çŠ¶æ…‹ã«ç§»è¡Œ
+		if (m_vec.y <= 0.0f)
+		{
+			m_state = JumpState::Falling;
+		}
+		m_vec.y = kJumpPower;
+		break;
+	case JumpState::Falling:
+		// åœ°é¢ã«ç€åœ°ã—ãŸã‚‰å¾…æ©ŸçŠ¶æ…‹ã«ç§»è¡Œ
+		if (m_pos.y <= kGroundHeight)
+		{
+			m_pos.y = kGroundHeight;
+			m_vec.y = 0.0f;
+			m_state = JumpState::Idle;
+		}
+		break;
 	}
-	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®
-	Move();
+	// å‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ã‚’è¡¨ã™å€¤
+	float deltaTime = 0.0f;
 
+	// ç‰©ç†æ¼”ç®—ã®æ›´æ–°
+	Gravity(deltaTime);
+	Movement(deltaTime);
+	UpdateTransform();
 
 #ifdef _DEBUG
-	// ƒvƒŒƒCƒ„[‚Ì‚ğ‰ŠúˆÊ’u‚É–ß‚·
-	if (input.IsTrigger("¶ƒXƒeƒBƒbƒN‰Ÿ‚µ‚±‚İ"))
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚’åˆæœŸä½ç½®ã«æˆ»ã™
+	if (input.IsTrigger("å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—ã“ã¿"))
 	{
 		m_pos = VGet(0.0f, 0.0f, 0.0f);
 	}
@@ -75,94 +96,110 @@ void Player::Update(Input& input, Camera *camera)
 
 void Player::Draw()
 {
-	// ƒvƒŒƒCƒ„[‚Ìƒ‚ƒfƒ‹‚ğ•`‰æ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ¢ãƒ‡ãƒ«ã‚’æç”»
 	MV1DrawModel(m_model);
 
 
 #ifdef _DEBUG
+
+	DrawFormatString(10, 0, 0xff0000, "HP: %.1f", m_hp);
+	DrawFormatString(10, 20, 0x00ffff, "State: %d",static_cast<int>(m_state));
+	DrawSphere3D(GetColPos(), GetColRadius(), 16,0xff0000, 0xff0000, false);
+	
 	
 //	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
 //	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
-	DrawFormatString(10, 0, 0xff0000, "%f", m_hp);
-	// “–‚½‚è”»’è‚ÌƒfƒoƒbƒN•\¦
-	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
-	DrawSphere3D(VGet(0, 80, 0), 16, 16, 0x00ff00, 0x00ff00, false);
-	DrawLine3D(GetColPos(), VGet(0, 80, 0), 0x00ff00);
+	// å½“ãŸã‚Šåˆ¤å®šã®ãƒ‡ãƒãƒƒã‚¯è¡¨ç¤º
+//	DrawSphere3D(GetColPos(), GetColRadius(), 16, 0xff0000, 0xff0000, false);
+//	DrawSphere3D(VGet(0, 80, 0), 16, 16, 0x00ff00, 0x00ff00, false);
+//	DrawLine3D(GetColPos(), VGet(0, 80, 0), 0x00ff00);
 #endif // _DEBUG
 }
 
 VECTOR Player::GetColPos() const
 {
 	VECTOR result = m_pos;
-	result.y += 80.0f;
+	result.y += kCollisionHeightOffset;
 	return result;
 }
 
 float Player::GetColRadius() const
 {
-	return kColRadius;
+	return kCollisionRadius;
 }
 
-void Player::Move()
+void Player::HandleInput(Input& input)
 {
-	// Œ»İŒü‚¢‚Ä‚¢‚éŒü‚«
+	// ç§»å‹•å…¥åŠ›ã‹ã‚‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚
 	VECTOR dir = VGet(0, 0, 0);
 
-	// ‘OŒãˆÚ“®ˆ—		ufabsv‚Íâ‘Î’l
-	if (fabs(Pad::GetLeftStick().y) > 1.0f)
+	// å‰å¾Œç§»å‹•å‡¦ç†		ã€Œfabsã€ã¯çµ¶å¯¾å€¤
+	if (fabs(Pad::GetLeftStick().y) > kDeadZone)
 	{
 		dir.z = Pad::GetLeftStick().y;
 	}
 
-	// ¶‰EˆÚ“®ˆ—		ufabsv‚Íâ‘Î’l
-	if (fabs(Pad::GetLeftStick().x) > 1.0f)
+	// å·¦å³ç§»å‹•å‡¦ç†		ã€Œfabsã€ã¯çµ¶å¯¾å€¤
+	if (fabs(Pad::GetLeftStick().x) > kDeadZone)
 	{
 		dir.x = -Pad::GetLeftStick().x;
 	}
 
-	// dir‚É’l‚ª“ü‚Á‚Ä‚¢‚é‚È‚ç³‹K‰»‚·‚é
+	// dirã«å€¤ãŒå…¥ã£ã¦ã„ã‚‹ãªã‚‰æ­£è¦åŒ–ã™ã‚‹
 	if (VSize(dir) != 0.0f)
 	{
 		dir = VNorm(dir);
 	}
 
-	// ƒJƒƒ‰‚ÌŒü‚¢‚Ä‚¢‚éŒü‚«float‚ğ”½“]‚³‚¹‚é
-	m_getCameraAtan2 *= -1;
+	// ã‚«ãƒ¡ãƒ©ã®å‘ã„ã¦ã„ã‚‹å‘ãfloatã‚’åè»¢ã•ã›ã‚‹
+	float cameraAngle = m_getCameraAtan2 *= -1;
 
-	// ƒJƒƒ‰‚ÌŒü‚¢‚Ä‚¢‚éŒü‚«‚ğ90“x•â³
-	m_getCameraAtan2 += DX_PI_F / 2;
+	// ã‚«ãƒ¡ãƒ©ã®å‘ã„ã¦ã„ã‚‹å‘ãã‚’90åº¦è£œæ­£
+	cameraAngle =cameraAngle + DX_PI_F / 2.0f;
 
 	VECTOR vec;
-	vec.x = cosf(m_getCameraAtan2) * dir.x + sinf(m_getCameraAtan2) * dir.z;
+	vec.x = cosf(cameraAngle) * dir.x + sinf(cameraAngle) * dir.z;
 	vec.y = dir.y;
-	vec.z = -sinf(m_getCameraAtan2) * dir.x + cosf(m_getCameraAtan2) * dir.z;
+	vec.z = -sinf(cameraAngle) * dir.x + cosf(cameraAngle) * dir.z;
 
-	vec = VScale(vec, 5.0f);
-	m_vec = VAdd(m_vec, vec);
-
-
-	// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚É’l‚ğ
-	m_pos = VAdd(m_pos, m_vec);
-
-	// ÅŒã‚É“ü—Í‚³‚ê‚½’l‚ğ•ÏX‚µ‚È‚¢‚ß‚É“ü—Í‚ª‚È‚¢‚Æ‚«‚Íˆ—‚ğs‚í‚È‚¢
-	if (VSize(vec) != 0)
+	// é€Ÿåº¦ã‚’åŠ ç®—
+	m_vec = VAdd(m_vec, VScale(vec,kMoveAccel));
+	
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ãã‚’æ›´æ–°
+	if (VSize(vec) > 0.0f)
 	{
-		// ³‹K‰»
-		vec = VNorm(vec);
-		// ƒA[ƒNƒ^ƒ“ƒWƒFƒ“ƒg
-		m_rotY = atan2(vec.z, vec.x);
-		m_rotY -= DX_PI_F /2*3;	// 90“x‚¸‚ê‚Ä‚¢‚½•ª‚Ì•â³
+		m_rotY = atan2(vec.z, vec.x) - (DX_PI_F / 2.0f * 3.0f);
 		m_rotY *= -1.0f;
 	}
-
-	// ƒvƒŒƒCƒ„[‚ÌˆÊ’u
-	MV1SetPosition(m_model, m_pos);
-	// ƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚éŒü‚«
-	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
-
 }
 
-bool Player::isJumping() const
+void Player::Jump()
 {
-	return (m_pos.y > 0.0f);
+	m_vec.y = kJumpPower;
+	m_state = JumpState::Junmping;
+}
+
+void Player::Gravity(float deltaTime)
+{
+	if (m_state == JumpState::Junmping || m_state == JumpState::Falling)
+	{
+		m_vec.y += kGravity * deltaTime;
+	}
+}
+
+void Player::Movement(float deltaTime)
+{
+	// æ°´å¹³æ–¹å‘ã®é€Ÿåº¦æ¸›è¡°
+	m_vec.x *= kMoveDecRate;
+	m_vec.z *= kMoveDecRate;
+
+	// åº§æ¨™ã‚’æ›´æ–°
+	m_pos = VAdd(m_pos, VScale(m_vec, deltaTime));
+}
+
+void Player::UpdateTransform()
+{
+	// ãƒ¢ãƒ‡ãƒ«ã«åº§æ¨™ã¨å›è»¢ã‚’é©ç”¨
+	MV1SetPosition(m_model, m_pos);
+	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 
 class AttackProcessor;
@@ -6,87 +6,87 @@ class Player;
 class Boss
 {
 private:
-	// ƒ‚ƒfƒ‹
-	int m_model;				// ƒ{ƒX‚Ìƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
+	int m_model;				// ãƒœã‚¹ã®ãƒ¢ãƒ‡ãƒ«
 	
-	// ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg
-	int m_frameCountClose;		// ‹ß‚¢ê‡‚ÌƒtƒŒ[ƒ€‚ğƒJƒEƒ“ƒg‚·‚é
-	int m_frameCountFar;		// ‰“‚¢ê‡‚ÌƒtƒŒ[ƒ€‚ğƒJƒEƒ“ƒg‚·‚é
-	int m_frameCountTarget;		// ƒ^[ƒQƒbƒg‚Å‚«‚éê‡‚ÌƒtƒŒ[ƒ€‚ğƒJƒEƒ“ƒg‚·‚é
-	int m_frameCountTAction;	// ƒ^[ƒQƒbƒg‚µ‚Ä‚¢‚éê‡Ÿ‚És‚¤ˆ—‚Ì‡ŒvƒtƒŒ[ƒ€‚ğŒv‘ª‚·‚é
-	int m_frameCountFAction;	// ‰“‚¢ê‡Ÿ‚És‚¤ˆ—‚Ì‡ŒvƒtƒŒ[ƒ€‚ğŒv‘ª‚·‚é
-	int m_frameCountCAction;	// ‹ß‚¢ê‡Ÿ‚És‚¤ˆ—‚Ì‡ŒvƒtƒŒ[ƒ€‚ğŒv‘ª‚·‚é
-	int m_frameCountAttack;		// UŒ‚‚µ‚Ä‚¢‚é‚Æ‚«‚ÌŒ»İ‚ÌƒtƒŒ[ƒ€ŠÔ‚ğŠi”[‚·‚é‚½‚ß‚Ì‚à‚Ì
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆ
+	int m_frameCountClose;		// è¿‘ã„å ´åˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+	int m_frameCountFar;		// é ã„å ´åˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+	int m_frameCountTarget;		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã§ãã‚‹å ´åˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+	int m_frameCountTAction;	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã—ã¦ã„ã‚‹å ´åˆæ¬¡ã«è¡Œã†å‡¦ç†ã®åˆè¨ˆãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆæ¸¬ã™ã‚‹
+	int m_frameCountFAction;	// é ã„å ´åˆæ¬¡ã«è¡Œã†å‡¦ç†ã®åˆè¨ˆãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆæ¸¬ã™ã‚‹
+	int m_frameCountCAction;	// è¿‘ã„å ´åˆæ¬¡ã«è¡Œã†å‡¦ç†ã®åˆè¨ˆãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆæ¸¬ã™ã‚‹
+	int m_frameCountAttack;		// æ”»æ’ƒã—ã¦ã„ã‚‹ã¨ãã®ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ æ™‚é–“ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ã‚‚ã®
 	
-	// ”¼Œa
-	float m_rad;				// ƒ{ƒX‚Ì”¼Œa
-	float m_playerRad;			// ƒvƒŒƒCƒ„[‚Ì”¼Œa
+	// åŠå¾„
+	float m_rad;				// ãƒœã‚¹ã®åŠå¾„
+	float m_playerRad;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åŠå¾„
 
 	// 
 	float m_hp;					// HP
 
-	// Œü‚«‚ğ•Û‘¶‚·‚é‚½‚ß‚Ì‚à‚Ì
+	// å‘ãã‚’ä¿å­˜ã™ã‚‹ãŸã‚ã®ã‚‚ã®
 	float m_currentRotY;
 
-	// ‘¬“x
-	float m_targetMoveSpeed;	// ƒ^[ƒQƒbƒg’†‚ÌˆÚ“®‘¬“x‚ğ•Ï‚¦‚é
+	// é€Ÿåº¦
+	float m_targetMoveSpeed;	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä¸­ã®ç§»å‹•é€Ÿåº¦ã‚’å¤‰ãˆã‚‹
 	
-	// ˆÊ’u
-	VECTOR m_pos;				// ƒ{ƒX‚ÌˆÊ’u
-	VECTOR m_playerPos;			// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğæ“¾‚·‚éƒƒ“ƒo[
-	VECTOR m_attackPos;			// UŒ‚‚·‚éˆÊ’u‚ğ“ü‚ê‚é‚½‚ß‚Ì‚à‚Ì
+	// ä½ç½®
+	VECTOR m_pos;				// ãƒœã‚¹ã®ä½ç½®
+	VECTOR m_playerPos;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’å–å¾—ã™ã‚‹ãƒ¡ãƒ³ãƒãƒ¼
+	VECTOR m_attackPos;			// æ”»æ’ƒã™ã‚‹ä½ç½®ã‚’å…¥ã‚Œã‚‹ãŸã‚ã®ã‚‚ã®
 
-	// ó‘Ôƒtƒ‰ƒO
-	bool m_close;				// ‹ß‚¢‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_far;					// ‰“‚¢‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_target;				// ƒ^[ƒQƒbƒg‚Å‚«‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_moveUp;				// i‚ŞˆÚ“®‚ğ‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_moveDown;			// –ß‚éˆÚ“®‚ğ‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_meleeAttack;			// ‹ßÚUŒ‚‚ğ‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_rangedAttack;		// ‰“ŠuUŒ‚‚ğ‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
-	bool m_attack;				// UŒ‚’†‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
+	// çŠ¶æ…‹ãƒ•ãƒ©ã‚°
+	bool m_close;				// è¿‘ã„ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_far;					// é ã„ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_target;				// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã§ãã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_moveUp;				// é€²ã‚€ç§»å‹•ã‚’ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_moveDown;			// æˆ»ã‚‹ç§»å‹•ã‚’ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_meleeAttack;			// è¿‘æ¥æ”»æ’ƒã‚’ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_rangedAttack;		// é éš”æ”»æ’ƒã‚’ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
+	bool m_attack;				// æ”»æ’ƒä¸­ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹
 public:
 	Boss();
 	~Boss();
-	// ƒ‚ƒfƒ‹‚Ìİ’è
+	// ãƒ¢ãƒ‡ãƒ«ã®è¨­å®š
 	void SetModel(int model) { m_model = model; }
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Init();
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	/// <param name="m_pPlayer"></param>
 	void Update(Player* player);
 
-	// •`‰æ
+	// æç”»
 	void Draw();
 
-	// ƒfƒoƒbƒO•¶š•`‰æ
+	// ãƒ‡ãƒãƒƒã‚°æ–‡å­—æç”»
 	void DebugFormatDraw();
 private:
-	// ‹——£‚Ì”»’è
-	void CloseDistance(float closeDist);		// ‹ß‹——£
-	void FarDistance(float farDist);			// ‰“‹——£
-	void TargetDistance(float targetDist);		// ƒ^[ƒQƒbƒg‚Å‚«‚é”ÍˆÍ
+	// è·é›¢ã®åˆ¤å®š
+	void CloseDistance(float closeDist);		// è¿‘è·é›¢
+	void FarDistance(float farDist);			// é è·é›¢
+	void TargetDistance(float targetDist);		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã§ãã‚‹ç¯„å›²
 
-	// s“®Œˆ’è
-	void DecideAction();						// UŒ‚‚ğ‚·‚é‚©ˆÚ“®‚ğ‚·‚é‚©‚Æ‚Ç‚Ü‚é‚©‚ğ”»’f‚·‚é
+	// è¡Œå‹•æ±ºå®š
+	void DecideAction();						// æ”»æ’ƒã‚’ã™ã‚‹ã‹ç§»å‹•ã‚’ã™ã‚‹ã‹ã¨ã©ã¾ã‚‹ã‹ã‚’åˆ¤æ–­ã™ã‚‹
 
-	// UŒ‚‚ÉŠÖ‚·‚é•¨
+	// æ”»æ’ƒã«é–¢ã™ã‚‹ç‰©
 	void SetAttackProcessor(AttackProcessor* processor);
 
-	// UŒ‚‚·‚éƒ^[ƒQƒbƒg
+	// æ”»æ’ƒã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	void SetTargetPlayer(Player* player);
 
-	// ˆÚ“®EUŒ‚
-	void Move(float MoveDist);					// ƒ{ƒX‚ÌˆÚ“®
-	void MeleeAttack();							// ‹ßÚUŒ‚
-	void RangedAttack();						// ‰“ŠuUŒ‚
+	// ç§»å‹•ãƒ»æ”»æ’ƒ
+	void Move(float MoveDist);					// ãƒœã‚¹ã®ç§»å‹•
+	void MeleeAttack();							// è¿‘æ¥æ”»æ’ƒ
+	void RangedAttack();						// é éš”æ”»æ’ƒ
 
-	// Œü‚¢‚Ä‚¢‚éŒü‚«
-	void RotationXYZ();							// Œü‚¢‚Ä‚¢‚éŒü‚«‚ğ•ÏX
+	// å‘ã„ã¦ã„ã‚‹å‘ã
+	void RotationXYZ();							// å‘ã„ã¦ã„ã‚‹å‘ãã‚’å¤‰æ›´
 
 	AttackProcessor* m_attackProcessor = nullptr;
 	Player* m_targetPlayer = nullptr;
