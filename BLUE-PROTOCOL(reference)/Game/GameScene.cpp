@@ -64,10 +64,10 @@ void GameScene::End()
 //	MV1DeleteModel(m_fieldHandle);
 }
 
-void GameScene::Update(Input& input)
+void GameScene::Update(Input& input, float deltaTime)
 {
 	m_pCamera->Update(m_pPlayer.get());
-	m_pPlayer->Update(input, m_pCamera.get());
+	m_pPlayer->Update(input, m_pCamera.get(),deltaTime);
 	m_pBoss->Update(m_pPlayer.get());
 
 

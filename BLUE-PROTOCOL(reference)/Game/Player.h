@@ -44,7 +44,7 @@ public:
 	void SetModel(int model) { m_model = model; }
 
 	void Init();
-	void Update(Input& input, Camera* camera);
+	void Update(Input& input, Camera* camera, float deltaTime);
 	void Draw();
 	VECTOR GetPos()const { return m_pos; }
 	VECTOR GetVec()const { return m_vec; }
@@ -52,7 +52,7 @@ public:
 	float GetColRadius()const;
 private:
 	void HandleInput(Input& input);
-	void Jump();
+	void Jump(float deltaTime);
 	void Gravity(float deltaTime);
 	void Movement(float deltaTime);
 	void UpdateTransform();

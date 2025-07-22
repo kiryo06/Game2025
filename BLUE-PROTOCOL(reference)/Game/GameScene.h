@@ -25,7 +25,7 @@ public:
 	/// virtual はこれを継承するかもしれないから、
 	/// overrideは明示的にオーバーライドをエディタに示すため
 	/// </summary>
-	void Update(Input& input) override;
+	void Update(Input& input,float deltaTime) override;
 	/// <summary>
 	/// 描画処理
 	/// </summary>

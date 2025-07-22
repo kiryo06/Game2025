@@ -26,7 +26,7 @@ public:
 	/// Applicationから呼ばれる関数。現在のシーンのUpdateをそのまま実行。
 	/// </summary>
 	/// <param name="input"></param>
-	void Update(Input& input);
+	void Update(Input& input, float deltaTime);
 	/// <summary>
 	/// Applicationから呼ばれる関数。現在のシーンのDrawをそのまま実行。
 	/// </summary>

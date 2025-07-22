@@ -25,7 +25,7 @@ void TitleScene::End()
 {
 }
 
-void TitleScene::Update(Input& input)
+void TitleScene::Update(Input& input,float deltaTime)
 {
 	(this->*pUpdateFunc)(input);
 }

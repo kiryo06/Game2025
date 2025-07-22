@@ -45,27 +45,38 @@ void Application::Run()
 	SceneController sceneController;
 	sceneController.Init();
 	Input input;
-	// ゲームループ
 	constexpr uint64_t frame_milliseconds = 16;
-	auto lastTime = 0;
+//	auto lastTime = 0;
+	// 前フレームの時間を保持する変数
+	long long lastTime = 0;
+	// ゲームループ
 	while (ProcessMessage() == 0) // Windowsが行う処理を受け取る関数をWhileのループごとに走らせている。
 		// このWhile文はフレームの処理を行っているから毎フレーム走らせていることになる。
 		// その戻り値でWhileの判定。異常(大抵ウィンドウが閉じられた時)が出たらループを抜けてプログラム終了。
 	{
 		// フレーム開始の時間
 		LONGLONG startTime = GetNowHiPerformanceCount();
-
+		// 現在の時間をマイクロ秒単位で取得
+		long long currentTime = GetNowHiPerformanceCount();
+		// lastTimeが初回(0)でなければ、経過時間を計算
+		float deltaTime = 0.0f;
+		if (lastTime != 0)
+		{
+			// (現在の時間 - 前フレームの時間) / 1,000,000.0f で秒単位に変換
+			deltaTime = (currentTime - lastTime) / 1000000.0f;
+		}
+		// 現在の時間を次のフレームのために保存
+		lastTime = currentTime;
 		// 画面全体をクリアする
 		ClearDrawScreen();
 
-		input.Update();
 
+		input.Update();
 		// ここにゲームの処理を書く
-		// このinputをシーン間で受け渡し続けている感じか
-		sceneController.Update(input);
+		sceneController.Update(input,deltaTime);
 		sceneController.Draw();
 
-//		DrawFormatString(0, 0, 0xffffff, "fps = %2.2f", GetFPS());
+		DrawFormatString(0, 0, 0xffffff, "fps = %2.2f", GetFPS());
 
 		// 画面の切り替わりを待つ
 		ScreenFlip();

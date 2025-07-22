@@ -16,10 +16,10 @@ void SceneController::Init()
 
 }
 
-void SceneController::Update(Input& input)
+void SceneController::Update(Input& input, float deltaTime)
 {
 	// ˆê”Ôã‚É‚ ‚éƒV[ƒ“‚ÌUpdate‚ðŒÄ‚Ño‚·
-	_scenes.back()->Update(input);
+	_scenes.back()->Update(input, deltaTime);
 }
 
 void SceneController::Draw()

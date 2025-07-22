@@ -7,10 +7,10 @@
 namespace
 {
 	// 物理移動関連
-	constexpr	const	float	kJumpPower				=	16.0f;			// プレイヤーのジャンプ力
-	constexpr	const	float	kGravity				=	-0.5f;			// プレイヤーの重力
+	constexpr	const	float	kJumpPower				=	160.0f;			// プレイヤーのジャンプ力
+	constexpr	const	float	kGravity				=	0.8f;			// プレイヤーの重力
 	constexpr	const	float	kMoveAccel				=	1.0f;			// プレイヤーの移動加速度
-	constexpr	const	float	kMoveDecRate			=	0.80f;			// プレイヤーの移動減速率
+	constexpr	const	float	kMoveDecRate			=	5.0f;			// プレイヤーの移動減速率
 
 	// コントローラについての設定
 	constexpr	const	float	kDeadZone				=	0.1f;			// デットゾーンを決める
@@ -45,7 +45,7 @@ void Player::Init()
 	m_hp = kDefaultHp;
 }
 
-void Player::Update(Input& input, Camera *camera)
+void Player::Update(Input& input, Camera *camera, float deltaTime)
 {
 	// カメラの向きを取得
 	m_getCameraAtan2 = camera->GetAtan2();
@@ -56,16 +56,17 @@ void Player::Update(Input& input, Camera *camera)
 		// 入力が入ったらジャンプ処理に移行
 		if (input.IsTrigger("Aボタン"))
 		{
-			Jump();
+			Jump(deltaTime);
+			printfDx("A");
 		}
 		break;
 	case JumpState::Junmping:
 		// 頂点に到達したら落下状態に移行
-		if (m_vec.y <= 0.0f)
+		if (m_pos.y >= 32.0f)
 		{
 			m_state = JumpState::Falling;
+			printfDx("B");
 		}
-		m_vec.y = kJumpPower;
 		break;
 	case JumpState::Falling:
 		// 地面に着地したら待機状態に移行
@@ -74,12 +75,10 @@ void Player::Update(Input& input, Camera *camera)
 			m_pos.y = kGroundHeight;
 			m_vec.y = 0.0f;
 			m_state = JumpState::Idle;
+			printfDx("C");
 		}
 		break;
 	}
-	// 前のフレームからの経過時間を表す値
-	float deltaTime = 0.0f;
-
 	// 物理演算の更新
 	Gravity(deltaTime);
 	Movement(deltaTime);
@@ -105,7 +104,7 @@ void Player::Draw()
 	DrawFormatString(10, 0, 0xff0000, "HP: %.1f", m_hp);
 	DrawFormatString(10, 20, 0x00ffff, "State: %d",static_cast<int>(m_state));
 	DrawSphere3D(GetColPos(), GetColRadius(), 16,0xff0000, 0xff0000, false);
-	
+	DrawFormatString(50, 50, 0xff0000, "X:%f.Y:%f.Z:%f", m_pos.x, m_pos.y, m_pos.z);
 	
 //	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
 //	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
@@ -173,28 +172,29 @@ void Player::HandleInput(Input& input)
 	}
 }
 
-void Player::Jump()
+void Player::Jump(float deltaTime)
 {
-	m_vec.y = kJumpPower;
+	m_vec.y += kJumpPower * deltaTime;
 	m_state = JumpState::Junmping;
 }
 
 void Player::Gravity(float deltaTime)
 {
-	if (m_state == JumpState::Junmping || m_state == JumpState::Falling)
+	if (/*m_state == JumpState::Junmping || */m_state == JumpState::Falling)
 	{
-		m_vec.y += kGravity * deltaTime;
+		m_vec.y -= kGravity * deltaTime;
 	}
 }
 
 void Player::Movement(float deltaTime)
 {
-	// 水平方向の速度減衰
-	m_vec.x *= kMoveDecRate;
-	m_vec.z *= kMoveDecRate;
-
 	// 座標を更新
 	m_pos = VAdd(m_pos, VScale(m_vec, deltaTime));
+	// 速度が十分に小さければゼロにする
+	if (VSize(m_vec) < 0.1f)
+	{
+	    m_vec = VGet(0.0f, m_vec.y, 0.0f);
+	}
 }
 
 void Player::UpdateTransform()
