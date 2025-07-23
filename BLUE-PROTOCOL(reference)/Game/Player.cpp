@@ -7,10 +7,12 @@
 namespace
 {
 	// 物理移動関連
-	constexpr	const	float	kJumpPower				=	160.0f;			// プレイヤーのジャンプ力
-	constexpr	const	float	kGravity				=	0.8f;			// プレイヤーの重力
-	constexpr	const	float	kMoveAccel				=	1.0f;			// プレイヤーの移動加速度
+	constexpr	const	float	kJumpPower				=	16.0f;			// プレイヤーのジャンプ力
+	constexpr	const	float	kGravity				=	9.8f;			// プレイヤーの重力
+	constexpr	const	float	kMoveAccel				=	2.0f;			// プレイヤーの移動加速度
 	constexpr	const	float	kMoveDecRate			=	5.0f;			// プレイヤーの移動減速率
+
+	constexpr	const	float	kTest					=	10.0f;			// デルタタイムが小さすぎるため補正
 
 	// コントローラについての設定
 	constexpr	const	float	kDeadZone				=	0.1f;			// デットゾーンを決める
@@ -56,7 +58,7 @@ void Player::Update(Input& input, Camera *camera, float deltaTime)
 		// 入力が入ったらジャンプ処理に移行
 		if (input.IsTrigger("Aボタン"))
 		{
-			Jump(deltaTime);
+			m_state = JumpState::Junmping;
 			printfDx("A");
 		}
 		break;
@@ -64,6 +66,7 @@ void Player::Update(Input& input, Camera *camera, float deltaTime)
 		// 頂点に到達したら落下状態に移行
 		if (m_pos.y >= 32.0f)
 		{
+			/*m_vec.y = 0.0f;*/
 			m_state = JumpState::Falling;
 			printfDx("B");
 		}
@@ -79,9 +82,11 @@ void Player::Update(Input& input, Camera *camera, float deltaTime)
 		}
 		break;
 	}
+	float deltaTimeTest = deltaTime * kTest;
 	// 物理演算の更新
-	Gravity(deltaTime);
-	Movement(deltaTime);
+	Jump(deltaTimeTest);
+	Gravity(deltaTimeTest);
+	Movement(deltaTimeTest);
 	UpdateTransform();
 
 #ifdef _DEBUG
@@ -105,6 +110,7 @@ void Player::Draw()
 	DrawFormatString(10, 20, 0x00ffff, "State: %d",static_cast<int>(m_state));
 	DrawSphere3D(GetColPos(), GetColRadius(), 16,0xff0000, 0xff0000, false);
 	DrawFormatString(50, 50, 0xff0000, "X:%f.Y:%f.Z:%f", m_pos.x, m_pos.y, m_pos.z);
+	DrawFormatString(50, 66, 0xff0000, "X:%f.Y:%f.Z:%f", m_vec.x, m_vec.y, m_vec.z);
 	
 //	DrawFormatString(100, 10, 0x00ffff, "%f", m_getCameraAtan2);
 //	DrawFormatString(10, 200, 0xff0000, "Vec X:%.3f | Vec Y:%.3f | Vec Z:%.3f", m_vec.x, m_vec.y, m_vec.z);
@@ -162,7 +168,7 @@ void Player::HandleInput(Input& input)
 	vec.z = -sinf(cameraAngle) * dir.x + cosf(cameraAngle) * dir.z;
 
 	// 速度を加算
-	m_vec = VAdd(m_vec, VScale(vec,kMoveAccel));
+	m_vec = VAdd(m_vec, vec);
 	
 	// プレイヤーの向きを更新
 	if (VSize(vec) > 0.0f)
@@ -174,13 +180,15 @@ void Player::HandleInput(Input& input)
 
 void Player::Jump(float deltaTime)
 {
-	m_vec.y += kJumpPower * deltaTime;
-	m_state = JumpState::Junmping;
+	if (m_state == JumpState::Junmping)
+	{
+		m_vec.y += kJumpPower * deltaTime;
+	}
 }
 
 void Player::Gravity(float deltaTime)
 {
-	if (/*m_state == JumpState::Junmping || */m_state == JumpState::Falling)
+	if (m_state == JumpState::Falling)
 	{
 		m_vec.y -= kGravity * deltaTime;
 	}
