@@ -9,7 +9,7 @@ namespace
 	// 物理移動関連
 	constexpr	const	float	kJumpPower				=	16.0f;			// プレイヤーのジャンプ力
 	constexpr	const	float	kGravity				=	9.8f;			// プレイヤーの重力
-	constexpr	const	float	kMoveAccel				=	2.0f;			// プレイヤーの移動加速度
+	constexpr	const	float	kMoveAccel				=	100.0f;			// プレイヤーの移動加速度
 	constexpr	const	float	kMoveDecRate			=	5.0f;			// プレイヤーの移動減速率
 
 	constexpr	const	float	kTest					=	10.0f;			// デルタタイムが小さすぎるため補正
@@ -30,11 +30,13 @@ Player::Player() :
 	m_model(-1),
 	m_rotY(0.0f),
 	m_getCameraAtan2(0.0f),
+	m_attackFrameCount(0.0f),
 	m_hp(0.0f),
 	m_attack(0.0f),
 	m_pos(0.0f, 0.0f, 0.0f),
 	m_vec(0.0f, 0.0f, 0.0f),
-	m_state(JumpState::Idle)
+	m_state(JumpState::Idle),
+	m_isAttacking(false)
 {
 }
 
@@ -45,6 +47,7 @@ Player::~Player()
 void Player::Init()
 {
 	m_hp = kDefaultHp;
+	m_attackCollider = nullptr;
 }
 
 void Player::Update(Input& input, Camera *camera, float deltaTime)
@@ -89,6 +92,31 @@ void Player::Update(Input& input, Camera *camera, float deltaTime)
 	Movement(deltaTimeTest);
 	UpdateTransform();
 
+	// Bボタンを押されたら攻撃開始
+	if (input.IsTrigger("Bボタン"))
+	{
+		StartAttack();
+	}
+
+	// 攻撃の処理
+	if (m_isAttacking)
+	{
+		m_attackFrameCount--;
+		// 攻撃コライダーをプレイヤーの向きに合わせて移動させる
+		// (この例では単純にプレイヤーの正面に配置)
+		VECTOR forward = VGet(sinf(m_rotY), 0.0f, cosf(m_rotY));
+		VScale(forward, 100.0f); // プレイヤーから10.0f前方に
+		m_attackCollider->center = VAdd(m_pos, forward);
+		// プレイヤーの攻撃判定
+		DrawSphere3D(m_attackCollider->center, m_attackCollider->radius, 16, 0x0000ff, 0x0000ff, false);
+		if (m_attackFrameCount <= 0)
+		{
+			m_isAttacking = false;
+			m_attackCollider = nullptr; // 攻撃判定を消す
+		}
+	}
+
+
 #ifdef _DEBUG
 	// プレイヤーのを初期位置に戻す
 	if (input.IsTrigger("左スティック押しこみ"))
@@ -105,7 +133,6 @@ void Player::Draw()
 
 
 #ifdef _DEBUG
-
 	DrawFormatString(10, 0, 0xff0000, "HP: %.1f", m_hp);
 	DrawFormatString(10, 20, 0x00ffff, "State: %d",static_cast<int>(m_state));
 	DrawSphere3D(GetColPos(), GetColRadius(), 16,0xff0000, 0xff0000, false);
@@ -168,7 +195,7 @@ void Player::HandleInput(Input& input)
 	vec.z = -sinf(cameraAngle) * dir.x + cosf(cameraAngle) * dir.z;
 
 	// 速度を加算
-	m_vec = VAdd(m_vec, vec);
+	m_vec = VScale(vec, kMoveAccel);
 	
 	// プレイヤーの向きを更新
 	if (VSize(vec) > 0.0f)
@@ -210,4 +237,13 @@ void Player::UpdateTransform()
 	// モデルに座標と回転を適用
 	MV1SetPosition(m_model, m_pos);
 	MV1SetRotationXYZ(m_model, VGet(0, m_rotY, 0));
+}
+
+void Player::StartAttack()
+{
+	m_isAttacking = true;
+	m_attackFrameCount = 30;
+
+	m_attackCollider = std::make_unique<ColliderSphere3D>();
+	m_attackCollider -> radius = 100.0f;
 }

@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include "DxLib.h"
+#include "ColliderSphere3D.h"
+#include <memory>
 
 class AttackProcessor;
 class Player;
 class Boss
 {
-private:
+private:			// メンバ変数
 	// モデル
 	int m_model;				// ボスのモデル
 	
@@ -45,7 +47,9 @@ private:
 	bool m_meleeAttack;			// 近接攻撃をするかどうかを判断する
 	bool m_rangedAttack;		// 遠隔攻撃をするかどうかを判断する
 	bool m_attack;				// 攻撃中かどうかを判断する
-public:
+
+	std::unique_ptr<ColliderSphere3D> m_hurtbox;	// ダメージを受ける当たり判定
+public:					// パブリック関数
 	Boss();
 	~Boss();
 	// モデルの設定
@@ -62,6 +66,9 @@ public:
 
 	// 描画
 	void Draw();
+
+	void TakeDamage(float damage);
+	ColliderSphere3D * GetHurtbox() const { return m_hurtbox.get(); }
 
 	// デバッグ文字描画
 	void DebugFormatDraw();

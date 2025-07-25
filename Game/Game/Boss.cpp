@@ -78,7 +78,13 @@ void Boss::Init()
 {
 	m_pos = kBossPos;
 	m_rad = kBossRad;
+	// 仮のHP
+	m_hp = 1000.0f;
 
+	// ダメージを受ける用のコライダーを生成
+	m_hurtbox = std::make_unique<ColliderSphere3D>();
+	m_hurtbox->center = m_pos;
+	m_hurtbox->radius = m_rad;
 }
 
 void Boss::Update(Player* player)
@@ -89,6 +95,8 @@ void Boss::Update(Player* player)
 	m_playerRad = player->GetColRadius();
 	// ボスとプレイヤーの距離を求める
 	float dist = CalcDistance(m_pos, m_playerPos);
+	// Hurtboxの位置をボスの現在の位置に設定
+	m_hurtbox->center = m_pos;
 	// ボスが攻撃するために必要な距離の条件
 	CloseDistance(dist);
 	FarDistance(dist);
@@ -128,8 +136,19 @@ void Boss::Draw()
 #endif // _DEBUG
 }
 
+void Boss::TakeDamage(float damage)
+{
+	m_hp -= damage;
+	if (m_hp < 0)
+	{
+		m_hp = 0;
+	}
+	// ダメージを受けたときの処理をここに追加する
+}
+
 void Boss::DebugFormatDraw()
 {
+	DrawFormatString(1000, 0, 0xffffff, "%.1f", m_hp);
 	printf("%d\n",m_frameCountAttack);
 	float moveSpeed = kMoveUpSpeed + m_targetMoveSpeed;
 	DrawFormatString(kDrawFormatPos * 8, kDrawFormatPos * 6, 0xffffff, "近い:%d", kCloseFrame - m_frameCountClose);
@@ -615,19 +634,3 @@ void Boss::RotationXYZ()
 	// 回転を設定
 	MV1SetRotationXYZ(m_model, VGet(0, m_currentRotY, 0));
 }
-
-//|**日付**| 作業内容														| 目的								|		// 状況
-//|**11日**| プレイヤーキャラクターのモデル表示 & 基本移動（前後左右		| プレイヤー操作の基本実装			|		// モデルが未実装
-//|**12日**| プレイヤーのアニメーション / カメラとの連携					| 表示のリアリティを高める			|		// アニメーションが未実装
-//|**13日**| ステージのモデル読み込み / 当たり判定のベース構築				| ステージを探索できる環境づくり	|		// 
-//|**14日**| プレイヤーとステージの衝突判定実装								| すり抜けないようにする			|		// 
-//|**15日**| ボスとの当たり判定（接触時ダメージ）							| 基本的な敵とのやり取り			|		// 
-//|**16日**| プレイヤーの攻撃（近接 or 遠距離） & ヒット判定				| 攻撃ができるようにする			|		// 
-//|**17日**| ボスの攻撃パターン（単純でOK） & ヒット処理					| 敵も攻撃してくるように			|		// 
-//|**18日**| HPシステム（プレイヤー・ボス） & 勝敗条件の実装				| 戦いの目的が明確に				|		// 
-//|**19日**| HPバーなど簡単なUI表示											| 状態がわかるようにする			|		// 
-//|**20日**| ゲームの状態管理（タイトル → ゲーム → 終了）					| ゲームの流れを作る				|		// 
-//|**21日**| テスト・バグ修正（1回目）										| プレイ可能な状態に調整			|		// 
-//|**22日**| 簡易BGM・SE（リソースがあれば）								| 臨場感アップ						|		// なし
-//|**23日**| エフェクト追加（ヒットや爆発など）								| 演出を整える						|		// なし
-//|**24日**| 最終調整 & 通しプレイテスト									| デモとして完成させる				|		// なし

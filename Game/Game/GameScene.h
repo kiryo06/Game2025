@@ -4,6 +4,7 @@
 
 class Player;
 class Boss;
+class AttackProcessor;
 class Camera;
 class Debug;
 class Test;
@@ -38,6 +39,7 @@ private:
 
 	std::shared_ptr<Player> m_pPlayer;
 	std::shared_ptr<Boss> m_pBoss;
+	std::shared_ptr<AttackProcessor> m_pAttackProcessor;
 	std::shared_ptr<Camera> m_pCamera;
 	std::shared_ptr<Debug> m_pDebug;
 	std::shared_ptr<Test> m_pTest;

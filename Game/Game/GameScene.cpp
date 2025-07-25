@@ -7,6 +7,7 @@
 #include <cassert>
 #include "Player.h"
 #include "Boss.h"
+#include "AttackProcessor.h"
 #include "Camera.h"
 #include "Debug.h"
 #include "Test.h"
@@ -33,6 +34,8 @@ void GameScene::Init()
 	m_pPlayer = std::make_shared<Player>();
 	// ボスの初期化
 	m_pBoss = std::make_shared<Boss>();
+	// 
+	m_pAttackProcessor = std::make_shared<AttackProcessor>();
 
 	m_pPlayer->SetModel(m_playerHandle);
 	m_pBoss->SetModel(m_bossHandle);
@@ -70,6 +73,11 @@ void GameScene::Update(Input& input, float deltaTime)
 	m_pPlayer->Update(input, m_pCamera.get(),deltaTime);
 	m_pBoss->Update(m_pPlayer.get());
 
+	if (input.IsTrigger("Bボタン"))
+	{
+		m_pAttackProcessor->BeginNewAttack();
+	}
+	m_pAttackProcessor->ProcessPlayerAttack(m_pPlayer.get(), m_pBoss.get());
 
 
 #ifdef _DEBUG
