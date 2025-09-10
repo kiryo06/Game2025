@@ -95,5 +95,5 @@ float Rect::Bottom() const
 void Rect::Draw()
 {
 //	DrawBox(Left(), Top(), Right(), Bottom(), col, false, 2.0f);
-	DrawBox(Left(), Top(), Right(), Bottom(), 0xffffff, false,2.0f); // ”’F‚Å“h‚è‚Â‚Ô‚µ
+	DrawBox(Left(), Top(), Right(), Bottom(), 0xffffff, false); // ”’F‚Å“h‚è‚Â‚Ô‚µ
 }
