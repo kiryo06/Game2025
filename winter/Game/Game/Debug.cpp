@@ -12,6 +12,7 @@
 
 namespace
 {
+	const char* DataCsv1 = "../GameData.csv";
 	constexpr int kDrawGrid = 500;
 	constexpr int kLine = 3;
 	constexpr int kColumn = 6;
@@ -24,7 +25,7 @@ Debug::Debug() :
 	// 3s6—ñ‚Ì‹ó•¶š—ñ‚Å‰Šú‰»‚µ‚½‚¢ê‡
 	Sad = std::vector<std::vector<std::string>>(kLine, std::vector<std::string>(kColumn, ""));
 	CsvLoad load;
-	std::vector<std::vector<std::string>> data = load.LoadFile("../BLUE_Data.csv");
+	std::vector<std::vector<std::string>> data = load.LoadFile(DataCsv1);
 	SetDebugData(data);
 }
 
@@ -46,17 +47,13 @@ void Debug::Init()
 			Sad[i][5].c_str()
 		);
 	}
-	//	int test = 0;
-	//	test = std::stoi(Sad[1][2]);
-	//	test = test + 20;
-	//	printf("%d", test);
 }
 
 void Debug::Update(Input& input)
 {
 	if (input.IsTrigger("BACK"))
 	{
-		WriteSadToCsv("../BLUE_Data.csv");
+		WriteSadToCsv(DataCsv1);
 	}
 }
 

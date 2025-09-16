@@ -10,6 +10,7 @@ namespace Game
 
 	constexpr int kColorBitNum = 32;
 
+
 #ifdef _DEBUG
 	constexpr bool kDefaultWindowMode = true; // ウィンドウモードで起動する
 #else

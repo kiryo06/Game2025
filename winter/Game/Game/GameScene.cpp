@@ -6,7 +6,6 @@
 #include "GameScene.h"
 #include <cassert>
 #include "Debug.h"
-//#include "Test.h"
 
 namespace
 {
@@ -35,11 +34,6 @@ void GameScene::Init()
 	// デバッグ情報の初期化
 	m_pDebug = std::make_shared<Debug>();
 	m_pDebug->Init();
-
-
-	// 授業用
-//	m_pTest = std::make_shared<Test>();
-//	m_pTest->Init();
 #endif // _DEBUG
 
 }
@@ -55,7 +49,6 @@ void GameScene::Update(Input& input, float deltaTime)
 #ifdef _DEBUG
 	// デバック情報の更新
 	m_pDebug->Update(input);
-//	m_pTest->Update();
 #endif // _DEBUG
 	// Update関数はポインタを使って動的に変更される
 	(this->*pUpdateFunc)(input);
@@ -67,7 +60,6 @@ void GameScene::Draw()
 #ifdef _DEBUG
 	// デバッグ情報の描画
 	m_pDebug->Draw();
-//	m_pTest->Draw();
 #endif // _DEBUG
 
 	// Draw関数はポインタを使って動的に変更される

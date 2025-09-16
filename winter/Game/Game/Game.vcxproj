@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{90035733-2ba1-4140-9b03-b123508f4c7e}</ProjectGuid>
-    <RootNamespace>DxLibTemplate1</RootNamespace>
+    <ProjectGuid>{4d688a82-6311-4bfe-b53a-d2172b4586e2}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
