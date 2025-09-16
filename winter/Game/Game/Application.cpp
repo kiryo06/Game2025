@@ -77,6 +77,7 @@ void Application::Run()
 		sceneController.Draw();
 
 		DrawFormatString(0, 0, 0xffffff, "fps = %2.2f", GetFPS());
+		printf("fps = %2.2f\n", GetFPS());
 
 		// ‰æ–Ê‚ÌØ‚è‘Ö‚í‚è‚ğ‘Ò‚Â
 		ScreenFlip();
