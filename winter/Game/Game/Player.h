@@ -26,5 +26,7 @@ private:
 	VECTOR m_vec;
 
 	bool m_isAttacking;
+
+	std::unique_ptr<ColliderSphere3D>
 };
 
