@@ -19,8 +19,8 @@ GameScene::GameScene(SceneController& controller)
 	pDrawFunc(&GameScene::FadeDraw)// 初期はフェード描画
 {
 	// ゲームシーンの初期化処理
-	//m_playerHandle = MV1LoadModel("data/model/player.mv1");
-	//assert(m_playerHandle != -1);
+	m_playerHandle = MV1LoadModel("data/model/player.mv1");
+	assert(m_playerHandle != -1);
 }
 
 void GameScene::Init()

@@ -29,6 +29,8 @@ public:
 	void Draw() override;
 private:
 	int m_frameCount = 0;	// フレームカウント
+	int m_playerHandle;		// プレイヤーのモデル
+	int m_enemyHandle;		// 敵のモデル
 
 	std::shared_ptr<Debug> m_pDebug;
 	std::shared_ptr<Test> m_pTest;

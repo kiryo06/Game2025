@@ -1,4 +1,7 @@
 #pragma once
+#include "DxLib.h"
+#include <memory>
+#include"ColliderSphere3D.h"
 class Player
 {
 public:
@@ -27,6 +30,6 @@ private:
 
 	bool m_isAttacking;
 
-	std::unique_ptr<ColliderSphere3D>
+	std::unique_ptr<ColliderSphere3D>m_attackCollider;
 };
 
