@@ -63,7 +63,8 @@ void GameScene::End()
 {
 	// ƒ‚ƒfƒ‹‚Ì‰ð•ú
 	MV1DeleteModel(m_playerHandle);
-//	MV1DeleteModel(m_enemyHandle);
+	MV1DeleteModel(m_bossHandle);
+	
 //	MV1DeleteModel(m_fieldHandle);
 }
 
