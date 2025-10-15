@@ -11,6 +11,17 @@ namespace
 	constexpr int fade_interval = 60;
 }
 
+TitleScene::TitleScene(SceneController& controller) :
+	BaseScene(controller),
+	pUpdateFunc(&TitleScene::FadeInUpdate),
+	pDrawFunc(&TitleScene::FadeDraw),
+	m_frameCount(fade_interval)
+{
+	// ロード
+//	m_background = LoadGraph("image/Title.png");
+//	assert(m_background != -1);
+}
+
 void TitleScene::Init()
 {
 	// 初期化処理
@@ -23,6 +34,11 @@ void TitleScene::Init()
 
 void TitleScene::End()
 {
+	if (m_background != -1)
+	{
+		DeleteGraph(m_background);
+		m_background = -1;
+	}
 }
 
 void TitleScene::Update(Input& input, float deltaTime)
@@ -96,15 +112,4 @@ void TitleScene::FadeDraw()
 void TitleScene::NormalDraw()
 {
 	DrawString(10, 10, "Title Scene", 0xffffff);
-}
-
-TitleScene::TitleScene(SceneController& controller) :
-	BaseScene(controller),
-	pUpdateFunc(&TitleScene::FadeInUpdate),
-	pDrawFunc(&TitleScene::FadeDraw),
-	m_frameCount(fade_interval)
-{
-	// ロード
-//	m_background = LoadGraph("image/Title.png");
-//	assert(m_background != -1);
 }

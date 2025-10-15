@@ -19,7 +19,7 @@ GameScene::GameScene(SceneController& controller)
 	pDrawFunc(&GameScene::FadeDraw)// 初期はフェード描画
 {
 	// ゲームシーンの初期化処理
-	m_playerHandle = MV1LoadModel("data/model/player.mv1");
+//	m_playerHandle = MV1LoadModel("data/model/player.mv1");
 	assert(m_playerHandle != -1);
 }
 
@@ -41,6 +41,7 @@ void GameScene::Init()
 void GameScene::End()
 {
 	// モデルの解放
+	MV1DeleteModel(m_playerHandle);
 }
 
 void GameScene::Update(Input& input, float deltaTime)
